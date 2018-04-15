@@ -1,4 +1,5 @@
 #include "MetaAssembler.h"
+#include "Options.h"
 using namespace std;
 
 MetaAssembler::MetaAssembler(QWidget *parent)
@@ -33,7 +34,7 @@ MetaAssembler::MetaAssembler(QWidget *parent)
 
 void MetaAssembler::openHandler()
 {
-	string content = fileHandler.openFile();
+	string content = fileHandler.openFile("");
 	if (content != "") {
 		ui.textEdit->setText(QString::fromStdString(content));
 	}
@@ -65,6 +66,7 @@ void MetaAssembler::cutHandler()
 
 void MetaAssembler::copyHandler()
 {
+	
 }
 
 void MetaAssembler::pasteHandler()
@@ -89,6 +91,8 @@ void MetaAssembler::customiseHandler()
 
 void MetaAssembler::optionsHandler()
 {
+	Options *w = new Options();
+	w->show();
 }
 
 void MetaAssembler::helpHandler()

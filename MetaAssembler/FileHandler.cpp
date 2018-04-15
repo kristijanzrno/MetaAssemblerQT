@@ -15,16 +15,18 @@ FileHandler::FileHandler(QWidget *parent)
 	mainWindow = parent;
 }
 
-string FileHandler::openFile()
+string FileHandler::openFile(string name)
 {
 	string content;
-	QString filename = QFileDialog::getOpenFileName(mainWindow, QFileDialog::tr("Open File"), "", QFileDialog::tr("MetaAssembler Project (*.MASP);;Text file (*.txt)"));
-	if (filename != "" && filename != NULL)
-	{
-		content = fileRead(filename.toUtf8().constData());
+	if (name == "") {
+		QString filename = QFileDialog::getOpenFileName(mainWindow, QFileDialog::tr("Open File"), "", QFileDialog::tr("MetaAssembler Project (*.MASP);;Text file (*.txt)"));
+		if (filename != "" && filename != NULL)
+		{
+			content = fileRead(filename.toUtf8().constData());
+		}
 	}
-	else{
-		
+	else {
+		content = fileRead(name);
 	}
 	return content;
 }

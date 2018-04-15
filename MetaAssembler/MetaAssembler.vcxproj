@@ -116,20 +116,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FileHandler.cpp" />
+    <ClCompile Include="InstructionEditor.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MetaAssembler.cpp" />
+    <ClCompile Include="Options.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MetaAssembler.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="InstructionEditor.ui" />
     <QtUic Include="MetaAssembler.ui" />
+    <QtUic Include="Options.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="MetaAssembler.qrc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileHandler.h" />
+    <QtMoc Include="InstructionEditor.h" />
+    <QtMoc Include="Options.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

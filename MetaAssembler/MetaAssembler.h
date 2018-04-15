@@ -34,4 +34,5 @@ private slots:
 private:
 	Ui::MetaAssemblerClass ui;
 	FileHandler fileHandler;
+
 };

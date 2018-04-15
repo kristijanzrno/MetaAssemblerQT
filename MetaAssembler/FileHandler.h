@@ -6,7 +6,7 @@ class FileHandler {
 public:
 	FileHandler();
 	FileHandler(QWidget *parent);
-	std::string openFile();
+	std::string openFile(std::string name);
 	bool saveFile();
 private:
 	QWidget *mainWindow;

@@ -39,14 +39,32 @@
     <ClCompile Include="FileHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Options.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InstructionEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MetaAssembler.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="Options.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="InstructionEditor.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MetaAssembler.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="Options.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="InstructionEditor.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

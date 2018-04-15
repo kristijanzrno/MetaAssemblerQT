@@ -40,13 +40,15 @@ bool FileHandler::saveFile()
 string FileHandler::fileRead(string name)
 {
 	string content;
-	ifstream readFile(name);
+	ifstream readFile;
+	readFile.open(name);
 	if (readFile.is_open())
 	{
 		stringstream stream;
 		stream << readFile.rdbuf();
 		content = stream.str();
-
+		readFile.close();
 	}
 	return content;
+
 }

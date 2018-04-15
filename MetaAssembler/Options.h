@@ -2,7 +2,7 @@
 #include <QWidget>
 #include "ui_Options.h"
 #include "FileHandler.h"
-
+#include "qstandarditemmodel.h"
 class Options : public QWidget
 {
 	Q_OBJECT
@@ -24,4 +24,5 @@ private:
 
 private:
 	Ui::Options ui;
+	QStandardItemModel *itemModel;
 };

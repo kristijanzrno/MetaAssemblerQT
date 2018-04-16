@@ -9,7 +9,7 @@
 using namespace std;
 
 Options::Options(QWidget *parent)
-	: QWidget(parent)
+	: QDialog(parent)
 {
 	ui.setupUi(this);
 
@@ -34,22 +34,36 @@ Options::~Options()
 
 void Options::removeHandler()
 {
+	//Selection mode is "Single Selection" -> Only one selected index (0) 
+	QModelIndex selectedIndex = ui.tableView->selectionModel()->selectedIndexes()[0];
+	itemModel->removeRow(selectedIndex.row());
 }
 
 void Options::addHandler()
 {
-	InstructionEditor *editor = new InstructionEditor();
-	editor->show();
+	InstructionEditor editor = new InstructionEditor();
+	editor.exec();
 }
 
 void Options::okHandler()
 {
+	int numberOfItems = itemModel->rowCount();
+	string instructions;
+	for (int i = 0; i < numberOfItems; i++) {
+		for (int j = 0; j < 3; j++) {
+			instructions += itemModel->data(itemModel->index(i,j), Qt::DisplayRole).toString().toUtf8().constData();
+			if(j!=2)
+				instructions += "\t";
+		}
+		instructions += "\n";
+	}
+	fileHandler->saveFile("inst.txt", instructions);
 }
 
 void Options::editHandler()
 {
-	InstructionEditor *editor = new InstructionEditor();
-	editor->show();
+	InstructionEditor editor = new InstructionEditor();
+	editor.exec();
 }
 
 void Options::loadData()
@@ -70,4 +84,6 @@ void Options::loadData()
 		instructionCount++;
 	}
 	ui.tableView->setModel(itemModel);
+	ui.tableView->setSelectionBehavior(QAbstractItemView::SelectItems);
+	ui.tableView->setSelectionMode(QAbstractItemView::SingleSelection);
 }

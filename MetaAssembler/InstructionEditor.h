@@ -1,9 +1,9 @@
 #pragma once
 
-#include <QWidget>
+#include <QDialog>
 #include "ui_InstructionEditor.h"
 
-class InstructionEditor : public QWidget
+class InstructionEditor : public QDialog
 {
 	Q_OBJECT
 

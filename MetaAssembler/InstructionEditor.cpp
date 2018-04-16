@@ -1,7 +1,7 @@
 #include "InstructionEditor.h"
 
 InstructionEditor::InstructionEditor(QWidget *parent)
-	: QWidget(parent)
+	: QDialog(parent)
 {
 	ui.setupUi(this);
 }

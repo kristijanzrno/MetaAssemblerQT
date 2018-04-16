@@ -1,9 +1,9 @@
 #pragma once
-#include <QWidget>
+#include <QDialog>
 #include "ui_Options.h"
 #include "FileHandler.h"
 #include "qstandarditemmodel.h"
-class Options : public QWidget
+class Options : public QDialog
 {
 	Q_OBJECT
 

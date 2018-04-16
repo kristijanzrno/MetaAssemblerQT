@@ -1,5 +1,6 @@
 #include "MetaAssembler.h"
 #include "Options.h"
+#include <sstream>
 using namespace std;
 
 MetaAssembler::MetaAssembler(QWidget *parent)
@@ -29,6 +30,24 @@ MetaAssembler::MetaAssembler(QWidget *parent)
 	connect(ui.actionToolbarPaste, SIGNAL(triggered()), this, SLOT(pasteHandler()));
 	connect(ui.actionToolbarCopy, SIGNAL(triggered()), this, SLOT(copyHandler()));
 
+	//populate the tableView
+	cedarTableModel = new QStandardItemModel(256, 16, this);
+
+	//Columns
+	for (int i = 0; i < 16; i++) {
+		stringstream stringStream;
+		stringStream << uppercase << hex << i;
+		string title = stringStream.str();
+		cedarTableModel->setHorizontalHeaderItem(i, new QStandardItem(QString::fromStdString(title)));
+	}
+	//Rows
+	for (int i = 0; i < 256; i++) {
+		stringstream stringStream;
+		stringStream << uppercase << "0x" << hex << i << "X";
+		string title = stringStream.str();
+		cedarTableModel->setVerticalHeaderItem(i, new QStandardItem(QString::fromStdString(title)));
+	}
+	ui.tableView->setModel(cedarTableModel);
 	fileHandler = FileHandler(parent);
 }
 
@@ -45,7 +64,7 @@ void MetaAssembler::openHandler()
 
 void MetaAssembler::saveHandler()
 {
-	fileHandler.saveFile();
+	fileHandler.saveFile("","");
 }
 
 void MetaAssembler::exitHandler()
@@ -91,8 +110,8 @@ void MetaAssembler::customiseHandler()
 
 void MetaAssembler::optionsHandler()
 {
-	Options *w = new Options();
-	w->show();
+	Options w = new Options();
+	w.exec();
 }
 
 void MetaAssembler::helpHandler()

@@ -8,7 +8,7 @@
 #include <fstream>
 using namespace std;
 
-Options::Options(QWidget *parent)
+Options::Options(QMainWindow *parent)
 	: QDialog(parent)
 {
 	ui.setupUi(this);
@@ -41,8 +41,8 @@ void Options::removeHandler()
 
 void Options::addHandler()
 {
-	InstructionEditor editor = new InstructionEditor();
-	editor.exec();
+	InstructionEditor *editor = new InstructionEditor(this, itemModel, ui.tableView, false);
+	editor->exec();
 }
 
 void Options::okHandler()
@@ -62,8 +62,8 @@ void Options::okHandler()
 
 void Options::editHandler()
 {
-	InstructionEditor editor = new InstructionEditor();
-	editor.exec();
+	InstructionEditor *editor = new InstructionEditor(this, itemModel, ui.tableView, true);
+	editor->exec();
 }
 
 void Options::loadData()

@@ -81,27 +81,40 @@ void MetaAssembler::reformatDocumentHandler()
 
 void MetaAssembler::cutHandler()
 {
+	ui.textEdit->cut();
+
 }
 
 void MetaAssembler::copyHandler()
 {
-	
+	ui.textEdit->copy();
 }
 
 void MetaAssembler::pasteHandler()
 {
+	ui.textEdit->paste();
 }
 
 void MetaAssembler::deleteHandler()
 {
+	ui.textEdit->cut();
+
 }
 
 void MetaAssembler::editorViewHandler()
 {
+	if (ui.textEdit->isHidden())
+		ui.textEdit->show();
+	else
+		ui.textEdit->hide();
 }
 
 void MetaAssembler::tableViewHandler()
 {
+	if (ui.tableView->isHidden())
+		ui.tableView->show();
+	else
+		ui.tableView->hide();
 }
 
 void MetaAssembler::customiseHandler()
@@ -110,8 +123,8 @@ void MetaAssembler::customiseHandler()
 
 void MetaAssembler::optionsHandler()
 {
-	Options w = new Options();
-	w.exec();
+	Options *w = new Options(this);
+	w->exec();
 }
 
 void MetaAssembler::helpHandler()

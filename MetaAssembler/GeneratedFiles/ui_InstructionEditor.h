@@ -31,17 +31,17 @@ public:
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout;
     QLabel *label;
-    QLineEdit *lineEdit;
+    QLineEdit *instructionText;
     QHBoxLayout *horizontalLayout_3;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label_2;
-    QLineEdit *lineEdit_2;
+    QLineEdit *definitionText;
     QHBoxLayout *horizontalLayout_4;
     QLabel *label_3;
-    QComboBox *comboBox;
+    QComboBox *opSize;
     QHBoxLayout *horizontalLayout_5;
-    QPushButton *pushButton_2;
-    QPushButton *pushButton;
+    QPushButton *cancelButton;
+    QPushButton *okButton;
 
     void setupUi(QWidget *InstructionEditor)
     {
@@ -63,10 +63,10 @@ public:
 
         horizontalLayout->addWidget(label);
 
-        lineEdit = new QLineEdit(InstructionEditor);
-        lineEdit->setObjectName(QStringLiteral("lineEdit"));
+        instructionText = new QLineEdit(InstructionEditor);
+        instructionText->setObjectName(QStringLiteral("instructionText"));
 
-        horizontalLayout->addWidget(lineEdit);
+        horizontalLayout->addWidget(instructionText);
 
 
         verticalLayout->addLayout(horizontalLayout);
@@ -82,10 +82,10 @@ public:
 
         horizontalLayout_2->addWidget(label_2);
 
-        lineEdit_2 = new QLineEdit(InstructionEditor);
-        lineEdit_2->setObjectName(QStringLiteral("lineEdit_2"));
+        definitionText = new QLineEdit(InstructionEditor);
+        definitionText->setObjectName(QStringLiteral("definitionText"));
 
-        horizontalLayout_2->addWidget(lineEdit_2);
+        horizontalLayout_2->addWidget(definitionText);
 
 
         horizontalLayout_3->addLayout(horizontalLayout_2);
@@ -101,14 +101,14 @@ public:
 
         horizontalLayout_4->addWidget(label_3);
 
-        comboBox = new QComboBox(InstructionEditor);
-        comboBox->addItem(QString());
-        comboBox->addItem(QString());
-        comboBox->addItem(QString());
-        comboBox->addItem(QString());
-        comboBox->setObjectName(QStringLiteral("comboBox"));
+        opSize = new QComboBox(InstructionEditor);
+        opSize->addItem(QString());
+        opSize->addItem(QString());
+        opSize->addItem(QString());
+        opSize->addItem(QString());
+        opSize->setObjectName(QStringLiteral("opSize"));
 
-        horizontalLayout_4->addWidget(comboBox);
+        horizontalLayout_4->addWidget(opSize);
 
 
         verticalLayout->addLayout(horizontalLayout_4);
@@ -119,15 +119,15 @@ public:
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setSpacing(6);
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
-        pushButton_2 = new QPushButton(InstructionEditor);
-        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+        cancelButton = new QPushButton(InstructionEditor);
+        cancelButton->setObjectName(QStringLiteral("cancelButton"));
 
-        horizontalLayout_5->addWidget(pushButton_2);
+        horizontalLayout_5->addWidget(cancelButton);
 
-        pushButton = new QPushButton(InstructionEditor);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
+        okButton = new QPushButton(InstructionEditor);
+        okButton->setObjectName(QStringLiteral("okButton"));
 
-        horizontalLayout_5->addWidget(pushButton);
+        horizontalLayout_5->addWidget(okButton);
 
 
         verticalLayout_2->addLayout(horizontalLayout_5);
@@ -144,13 +144,13 @@ public:
         label->setText(QApplication::translate("InstructionEditor", "Instruction", nullptr));
         label_2->setText(QApplication::translate("InstructionEditor", "Definition  ", nullptr));
         label_3->setText(QApplication::translate("InstructionEditor", "Operand Size (bytes)", nullptr));
-        comboBox->setItemText(0, QApplication::translate("InstructionEditor", "0", nullptr));
-        comboBox->setItemText(1, QApplication::translate("InstructionEditor", "1", nullptr));
-        comboBox->setItemText(2, QApplication::translate("InstructionEditor", "2", nullptr));
-        comboBox->setItemText(3, QApplication::translate("InstructionEditor", "3", nullptr));
+        opSize->setItemText(0, QApplication::translate("InstructionEditor", "0", nullptr));
+        opSize->setItemText(1, QApplication::translate("InstructionEditor", "1", nullptr));
+        opSize->setItemText(2, QApplication::translate("InstructionEditor", "2", nullptr));
+        opSize->setItemText(3, QApplication::translate("InstructionEditor", "3", nullptr));
 
-        pushButton_2->setText(QApplication::translate("InstructionEditor", "Cancel", nullptr));
-        pushButton->setText(QApplication::translate("InstructionEditor", "OK", nullptr));
+        cancelButton->setText(QApplication::translate("InstructionEditor", "Cancel", nullptr));
+        okButton->setText(QApplication::translate("InstructionEditor", "OK", nullptr));
     } // retranslateUi
 
 };

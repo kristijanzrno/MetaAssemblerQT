@@ -6,6 +6,7 @@
 #include "InstructionEditor.h"
 #include <iostream>
 #include <fstream>
+#include "qmessagebox.h"
 using namespace std;
 
 Options::Options(QMainWindow *parent)
@@ -17,6 +18,8 @@ Options::Options(QMainWindow *parent)
 	connect(ui.editButton, SIGNAL(clicked()), this, SLOT(editHandler()));
 	connect(ui.removeButton, SIGNAL(clicked()), this, SLOT(removeHandler()));
 	connect(ui.okButton, SIGNAL(clicked()), this, SLOT(okHandler()));
+	connect(ui.cancelButton, SIGNAL(clicked()), this, SLOT(close()));
+
 
 	itemModel = new QStandardItemModel(0, 3, this);
 	itemModel->setHorizontalHeaderItem(0, new QStandardItem(QString("Instruction")));
@@ -58,12 +61,23 @@ void Options::okHandler()
 		instructions += "\n";
 	}
 	fileHandler->saveFile("inst.txt", instructions);
+	close();
 }
 
 void Options::editHandler()
 {
-	InstructionEditor *editor = new InstructionEditor(this, itemModel, ui.tableView, true);
-	editor->exec();
+	//If nothing is selected no row can be edited
+	QModelIndexList selectedIndex = ui.tableView->selectionModel()->selectedIndexes();
+	if (selectedIndex.isEmpty()) {
+		QMessageBox message;
+		message.setWindowTitle("Error");
+		message.setText("Please select an instruction.");
+		message.exec();
+	}
+	else {
+		InstructionEditor *editor = new InstructionEditor(this, itemModel, ui.tableView, true);
+		editor->exec();
+	}
 }
 
 void Options::loadData()

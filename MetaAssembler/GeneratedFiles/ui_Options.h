@@ -32,12 +32,13 @@ public:
     QPushButton *editButton;
     QPushButton *removeButton;
     QPushButton *okButton;
+    QPushButton *cancelButton;
 
     void setupUi(QWidget *Options)
     {
         if (Options->objectName().isEmpty())
             Options->setObjectName(QStringLiteral("Options"));
-        Options->resize(447, 271);
+        Options->resize(500, 325);
         horizontalLayout = new QHBoxLayout(Options);
         horizontalLayout->setSpacing(6);
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
@@ -70,6 +71,11 @@ public:
 
         verticalLayout->addWidget(okButton);
 
+        cancelButton = new QPushButton(Options);
+        cancelButton->setObjectName(QStringLiteral("cancelButton"));
+
+        verticalLayout->addWidget(cancelButton);
+
 
         horizontalLayout->addLayout(verticalLayout);
 
@@ -85,7 +91,8 @@ public:
         addButton->setText(QApplication::translate("Options", "Add", nullptr));
         editButton->setText(QApplication::translate("Options", "Edit", nullptr));
         removeButton->setText(QApplication::translate("Options", "Remove", nullptr));
-        okButton->setText(QApplication::translate("Options", "OK", nullptr));
+        okButton->setText(QApplication::translate("Options", "Save", nullptr));
+        cancelButton->setText(QApplication::translate("Options", "Cancel", nullptr));
     } // retranslateUi
 
 };

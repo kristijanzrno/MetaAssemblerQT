@@ -1,5 +1,9 @@
 #include "InstructionEditor.h"
 #include <QMessageBox>
+#include <string>
+using namespace std;
+
+
 InstructionEditor::InstructionEditor(QDialog *parent, QStandardItemModel *itemModel, QTableView *tableView, bool edit)
 	: QDialog(parent)
 {
@@ -34,27 +38,41 @@ void InstructionEditor::okHandler()
 		QModelIndex selectedIndex = tableView->selectionModel()->selectedIndexes()[0];
 		row = selectedIndex.row();
 	}
-	//Security checks
+	//Checking fields
+	if (ui.definitionText->text() == "" || ui.instructionText->text() == "") {
+		errorMessage("This instruction/definition cannot be empty.");
+		return;
+	}
+	//Checking definition
+	string definition = ui.definitionText->text().toStdString();
+	for (char& c : definition) {
+		if (c >= '0' && c <= '9' || c>='a' && c<='f' ||c>='A' && c<'F') {
+			continue;
+		}
+		errorMessage("The definition characters must be in hex range(0-F).");
+		return;
+	}
+
 	int numberOfItems = itemModel->rowCount();
 	for (int i = 0; i < numberOfItems; i++) {
 		//Checking if instruction already exists
 		if (ui.instructionText->text() == itemModel->data(itemModel->index(i, 0), Qt::DisplayRole).toString()) {
-			if (!edit && !(row == i)) {
-				errorMessage("This instruction/definition already exists.");
+			if (!(edit && (row == i))) {
+				errorMessage("This instruction already exists.");
 				return;
 			}
 		}
 		//Checking if definition already exists
 		if (ui.definitionText->text() == itemModel->data(itemModel->index(i, 1), Qt::DisplayRole).toString()) {
-			if (!edit && !(row == i)) {
-				errorMessage("This instruction/definition already exists.");
+			if (!(edit && (row == i))) {
+				errorMessage("This definition already exists.");
 				return;
 			}
 		}
 	}
 	//Checking the instruction size
-	if (ui.definitionText->text().count() + ui.opSize->currentIndex() > 4) {
-		errorMessage("Instruction definition exceeds maximum size.");
+	if (ui.definitionText->text().count() + ui.opSize->currentIndex() != 4) {
+		errorMessage("Instruction definition + Operand size must equal 4");
 		return;
 	}
 	int indexToEdit;
@@ -65,6 +83,7 @@ void InstructionEditor::okHandler()
 		indexToEdit = numberOfItems;
 		itemModel->appendRow(new QStandardItem(QString("")));
 	}
+	//Saving the instruction as new one or at selected row (edit)
 	itemModel->setItem(indexToEdit, 0, new QStandardItem(ui.instructionText->text()));
 	itemModel->setItem(indexToEdit, 1, new QStandardItem(ui.definitionText->text()));
 	itemModel->setItem(indexToEdit, 2, new QStandardItem(ui.opSize->currentText()));

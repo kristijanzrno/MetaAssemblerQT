@@ -31,6 +31,8 @@ private slots:
 	void helpHandler();
 	void aboutHandler();
 	void documentNHandler();
+	void errorCheck();
+	void assemble();
 
 private:
 	Ui::MetaAssemblerClass ui;

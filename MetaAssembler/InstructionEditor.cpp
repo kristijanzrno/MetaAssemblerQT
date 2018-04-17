@@ -20,7 +20,7 @@ InstructionEditor::InstructionEditor(QDialog *parent, QStandardItemModel *itemMo
 		QModelIndex selectedIndex = tableView->selectionModel()->selectedIndexes()[0];
 		int row = selectedIndex.row();
 		int column = selectedIndex.column();
-		ui.instructionText->setText(itemModel->data(itemModel->index(row,0), Qt::DisplayRole).toString());
+		ui.instructionText->setText(itemModel->data(itemModel->index(row, 0), Qt::DisplayRole).toString());
 		ui.definitionText->setText(itemModel->data(itemModel->index(row, 1), Qt::DisplayRole).toString());
 		ui.opSize->setCurrentText(itemModel->data(itemModel->index(row, 2), Qt::DisplayRole).toString());
 	}
@@ -46,7 +46,7 @@ void InstructionEditor::okHandler()
 	//Checking definition
 	string definition = ui.definitionText->text().toStdString();
 	for (char& c : definition) {
-		if (c >= '0' && c <= '9' || c>='a' && c<='f' ||c>='A' && c<'F') {
+		if (c >= '0' && c <= '9' || c >= 'a' && c <= 'f' || c >= 'A' && c < 'F') {
 			continue;
 		}
 		errorMessage("The definition characters must be in hex range(0-F).");

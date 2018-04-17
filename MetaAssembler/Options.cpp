@@ -54,8 +54,8 @@ void Options::okHandler()
 	string instructions;
 	for (int i = 0; i < numberOfItems; i++) {
 		for (int j = 0; j < 3; j++) {
-			instructions += itemModel->data(itemModel->index(i,j), Qt::DisplayRole).toString().toUtf8().constData();
-			if(j!=2)
+			instructions += itemModel->data(itemModel->index(i, j), Qt::DisplayRole).toString().toUtf8().constData();
+			if (j != 2)
 				instructions += "\t";
 		}
 		instructions += "\n";

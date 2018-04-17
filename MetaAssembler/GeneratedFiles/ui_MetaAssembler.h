@@ -22,6 +22,7 @@
 #include <QtWidgets/QTableView>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QToolBar>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -52,11 +53,16 @@ public:
     QAction *actionToolbarCut;
     QAction *actionToolbarCopy;
     QAction *actionToolbarPaste;
+    QAction *actionError_Check;
+    QAction *actionConvertToCDM;
+    QAction *actionError_Check_2;
+    QAction *actionAssemble_to_CDM;
     QWidget *centralWidget;
-    QHBoxLayout *horizontalLayout_2;
+    QVBoxLayout *verticalLayout_3;
     QHBoxLayout *horizontalLayout;
     QTextEdit *textEdit;
     QTableView *tableView;
+    QTextEdit *statusText;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuEdit;
@@ -71,8 +77,8 @@ public:
     {
         if (MetaAssemblerClass->objectName().isEmpty())
             MetaAssemblerClass->setObjectName(QStringLiteral("MetaAssemblerClass"));
-        MetaAssemblerClass->resize(1500, 1000);
-        MetaAssemblerClass->setMinimumSize(QSize(1500, 1000));
+        MetaAssemblerClass->resize(718, 409);
+        MetaAssemblerClass->setMinimumSize(QSize(0, 0));
         actionNew = new QAction(MetaAssemblerClass);
         actionNew->setObjectName(QStringLiteral("actionNew"));
         actionOpen = new QAction(MetaAssemblerClass);
@@ -140,12 +146,26 @@ public:
         QIcon icon6;
         icon6.addFile(QStringLiteral("Resources/paste.png"), QSize(), QIcon::Normal, QIcon::Off);
         actionToolbarPaste->setIcon(icon6);
+        actionError_Check = new QAction(MetaAssemblerClass);
+        actionError_Check->setObjectName(QStringLiteral("actionError_Check"));
+        QIcon icon7;
+        icon7.addFile(QStringLiteral("../../../../Desktop/png/24x24/Danger.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionError_Check->setIcon(icon7);
+        actionConvertToCDM = new QAction(MetaAssemblerClass);
+        actionConvertToCDM->setObjectName(QStringLiteral("actionConvertToCDM"));
+        QIcon icon8;
+        icon8.addFile(QStringLiteral("../../../../Desktop/png/24x24/Component.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionConvertToCDM->setIcon(icon8);
+        actionError_Check_2 = new QAction(MetaAssemblerClass);
+        actionError_Check_2->setObjectName(QStringLiteral("actionError_Check_2"));
+        actionAssemble_to_CDM = new QAction(MetaAssemblerClass);
+        actionAssemble_to_CDM->setObjectName(QStringLiteral("actionAssemble_to_CDM"));
         centralWidget = new QWidget(MetaAssemblerClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        horizontalLayout_2 = new QHBoxLayout(centralWidget);
-        horizontalLayout_2->setSpacing(6);
-        horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        verticalLayout_3 = new QVBoxLayout(centralWidget);
+        verticalLayout_3->setSpacing(6);
+        verticalLayout_3->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(6);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
@@ -160,12 +180,17 @@ public:
         horizontalLayout->addWidget(tableView);
 
 
-        horizontalLayout_2->addLayout(horizontalLayout);
+        verticalLayout_3->addLayout(horizontalLayout);
+
+        statusText = new QTextEdit(centralWidget);
+        statusText->setObjectName(QStringLiteral("statusText"));
+
+        verticalLayout_3->addWidget(statusText);
 
         MetaAssemblerClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MetaAssemblerClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1500, 22));
+        menuBar->setGeometry(QRect(0, 0, 718, 22));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuEdit = new QMenu(menuBar);
@@ -195,6 +220,8 @@ public:
         menuFile->addAction(actionOpen);
         menuFile->addAction(actionSave_As);
         menuFile->addAction(actionExit);
+        menuFile->addAction(actionError_Check_2);
+        menuFile->addAction(actionAssemble_to_CDM);
         menuEdit->addAction(menuReformat->menuAction());
         menuEdit->addAction(actionCut);
         menuEdit->addAction(actionCopy);
@@ -216,6 +243,9 @@ public:
         mainToolBar->addAction(actionToolbarCut);
         mainToolBar->addAction(actionToolbarCopy);
         mainToolBar->addAction(actionToolbarPaste);
+        mainToolBar->addSeparator();
+        mainToolBar->addAction(actionError_Check);
+        mainToolBar->addAction(actionConvertToCDM);
 
         retranslateUi(MetaAssemblerClass);
 
@@ -248,6 +278,10 @@ public:
         actionToolbarCut->setText(QApplication::translate("MetaAssemblerClass", "Cut", nullptr));
         actionToolbarCopy->setText(QApplication::translate("MetaAssemblerClass", "Copy", nullptr));
         actionToolbarPaste->setText(QApplication::translate("MetaAssemblerClass", "Paste", nullptr));
+        actionError_Check->setText(QApplication::translate("MetaAssemblerClass", "Error Check", nullptr));
+        actionConvertToCDM->setText(QApplication::translate("MetaAssemblerClass", "ConvertToCDM", nullptr));
+        actionError_Check_2->setText(QApplication::translate("MetaAssemblerClass", "Error Check", nullptr));
+        actionAssemble_to_CDM->setText(QApplication::translate("MetaAssemblerClass", "Assemble to CDM", nullptr));
         menuFile->setTitle(QApplication::translate("MetaAssemblerClass", "File", nullptr));
         menuEdit->setTitle(QApplication::translate("MetaAssemblerClass", "Edit", nullptr));
         menuReformat->setTitle(QApplication::translate("MetaAssemblerClass", "Reformat", nullptr));

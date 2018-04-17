@@ -115,8 +115,11 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Assembler.cpp" />
     <ClCompile Include="FileHandler.cpp" />
     <ClCompile Include="InstructionEditor.cpp" />
+    <ClCompile Include="Instruction.cpp" />
+    <ClCompile Include="Label.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MetaAssembler.cpp" />
     <ClCompile Include="Options.cpp" />
@@ -133,7 +136,10 @@
     <QtRcc Include="MetaAssembler.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Assembler.h" />
     <ClInclude Include="FileHandler.h" />
+    <ClInclude Include="Instruction.h" />
+    <ClInclude Include="Label.h" />
     <QtMoc Include="InstructionEditor.h" />
     <QtMoc Include="Options.h" />
   </ItemGroup>

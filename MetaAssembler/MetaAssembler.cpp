@@ -29,23 +29,29 @@ MetaAssembler::MetaAssembler(QWidget *parent)
 	connect(ui.actionToolbarCut, SIGNAL(triggered()), this, SLOT(cutHandler()));
 	connect(ui.actionToolbarPaste, SIGNAL(triggered()), this, SLOT(pasteHandler()));
 	connect(ui.actionToolbarCopy, SIGNAL(triggered()), this, SLOT(copyHandler()));
+	connect(ui.actionAssemble_to_CDM, SIGNAL(triggered()), this, SLOT(assemble()));
+	connect(ui.actionConvertToCDM, SIGNAL(triggered()), this, SLOT(assemble()));
+	connect(ui.actionError_Check, SIGNAL(triggered()), this, SLOT(errorCheck()));
+	connect(ui.actionError_Check_2, SIGNAL(triggered()), this, SLOT(errorCheck()));
+
 
 	//populate the tableView
 	cedarTableModel = new QStandardItemModel(256, 16, this);
 
 	//Columns
+	stringstream stringStream;
 	for (int i = 0; i < 16; i++) {
-		stringstream stringStream;
 		stringStream << uppercase << hex << i;
 		string title = stringStream.str();
 		cedarTableModel->setHorizontalHeaderItem(i, new QStandardItem(QString::fromStdString(title)));
+		stringStream.str("");
 	}
 	//Rows
 	for (int i = 0; i < 256; i++) {
-		stringstream stringStream;
 		stringStream << uppercase << "0x" << hex << i << "X";
 		string title = stringStream.str();
 		cedarTableModel->setVerticalHeaderItem(i, new QStandardItem(QString::fromStdString(title)));
+		stringStream.str("");
 	}
 	ui.tableView->setModel(cedarTableModel);
 	fileHandler = FileHandler(parent);
@@ -69,6 +75,8 @@ void MetaAssembler::saveHandler()
 
 void MetaAssembler::exitHandler()
 {
+	//check if the user wants to save
+	close();
 }
 
 void MetaAssembler::reformatSelectionHandler()
@@ -98,7 +106,6 @@ void MetaAssembler::pasteHandler()
 void MetaAssembler::deleteHandler()
 {
 	ui.textEdit->cut();
-
 }
 
 void MetaAssembler::editorViewHandler()
@@ -136,5 +143,13 @@ void MetaAssembler::aboutHandler()
 }
 
 void MetaAssembler::documentNHandler()
+{
+}
+
+void MetaAssembler::errorCheck()
+{
+}
+
+void MetaAssembler::assemble()
 {
 }

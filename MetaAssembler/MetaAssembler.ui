@@ -6,21 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1500</width>
-    <height>1000</height>
+    <width>718</width>
+    <height>409</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1500</width>
-    <height>1000</height>
+    <width>0</width>
+    <height>0</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>MetaAssembler</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
@@ -31,6 +31,9 @@
       </item>
      </layout>
     </item>
+    <item>
+     <widget class="QTextEdit" name="statusText"/>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -38,7 +41,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1500</width>
+     <width>718</width>
      <height>22</height>
     </rect>
    </property>
@@ -50,6 +53,8 @@
     <addaction name="actionOpen"/>
     <addaction name="actionSave_As"/>
     <addaction name="actionExit"/>
+    <addaction name="actionError_Check_2"/>
+    <addaction name="actionAssemble_to_CDM"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -110,6 +115,9 @@
    <addaction name="actionToolbarCut"/>
    <addaction name="actionToolbarCopy"/>
    <addaction name="actionToolbarPaste"/>
+   <addaction name="separator"/>
+   <addaction name="actionError_Check"/>
+   <addaction name="actionConvertToCDM"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew">
@@ -253,6 +261,34 @@
    </property>
    <property name="text">
     <string>Paste</string>
+   </property>
+  </action>
+  <action name="actionError_Check">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../Desktop/png/24x24/Danger.png</normaloff>../../../../Desktop/png/24x24/Danger.png</iconset>
+   </property>
+   <property name="text">
+    <string>Error Check</string>
+   </property>
+  </action>
+  <action name="actionConvertToCDM">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../Desktop/png/24x24/Component.png</normaloff>../../../../Desktop/png/24x24/Component.png</iconset>
+   </property>
+   <property name="text">
+    <string>ConvertToCDM</string>
+   </property>
+  </action>
+  <action name="actionError_Check_2">
+   <property name="text">
+    <string>Error Check</string>
+   </property>
+  </action>
+  <action name="actionAssemble_to_CDM">
+   <property name="text">
+    <string>Assemble to CDM</string>
    </property>
   </action>
  </widget>

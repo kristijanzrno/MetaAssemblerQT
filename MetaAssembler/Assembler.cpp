@@ -5,7 +5,7 @@ using namespace std;
 Assembler::Assembler(QTextEdit* statusText)
 {
 	fileHandler = new FileHandler();
-	this->statusText = statusText;
+	statusOutput = new StatusOutput(statusText);
 	reloadSet();
 }
 
@@ -25,13 +25,33 @@ bool Assembler::assemble(string text)
 			if (isInstruction(words[i])) {
 				Instruction *inst = new Instruction(lineCount, words[i], instructionsList[words[i]]);
 				if (inst->getDefinition().length() < 3) {
-					inst->setValue(words[i + 1]);
+					if (!(i == words.size()-1)) {
+						if (i + 1 == words.size()-1){
+							//success
+						inst->setValue(words[i + 1]);
+						}
+						else {
+							//too many arguments
+							statusOutput->showMessage(lineCount, 0);
+						}
+					}
+					else {
+						//operand missing
+						statusOutput->showMessage(lineCount, 1);
+					}
+				}
+				else {
+					if (i < words.size()-1) {
+						//unnecessary argument
+						statusOutput->showMessage(lineCount, 2);
+					}
+					else {
+						//success
+					}
+
 				}
 				instructions.push_back(inst);
-				statusText->append("Definition:");
-				statusText->append(QString::fromStdString(inst->getDefinition()));
-				statusText->append("Value:");
-				statusText->append(QString::fromStdString(inst->getValue()));
+
 				break;
 				
 			}
@@ -44,16 +64,11 @@ bool Assembler::assemble(string text)
 				}
 				Directive *dir = new Directive(lineCount, directive, extension);
 				directives.push_back(dir);
-				statusText->append("Directive:");
-				statusText->append(QString::fromStdString(directive));
-				statusText->append(QString::fromStdString(extension));
 				break;
 			}
 			else if (i == 0) {
 				Label *label = new Label(lineCount, words[i], address);
 				labels.push_back(label);
-				statusText->append("Label:");
-				statusText->append(QString::fromStdString(words[i]));
 				
 			}
 			else {
@@ -61,6 +76,7 @@ bool Assembler::assemble(string text)
 			}
 
 		}
+		lineCount++;
 	}
 	return false;
 }
@@ -92,7 +108,7 @@ bool Assembler::isDirective(string word)
 	if (word.size() < 2)
 		return false;
 
-	if (word == "org")
+	if (word == "org" || word == "equ")
 		return true;
 	
 	string dir = word.substr(0, 2);

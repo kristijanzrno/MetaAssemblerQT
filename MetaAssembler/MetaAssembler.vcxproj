@@ -124,6 +124,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MetaAssembler.cpp" />
     <ClCompile Include="Options.cpp" />
+    <ClCompile Include="StatusOutput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MetaAssembler.h" />
@@ -142,8 +143,12 @@
     <ClInclude Include="FileHandler.h" />
     <ClInclude Include="Instruction.h" />
     <ClInclude Include="Label.h" />
+    <ClInclude Include="StatusOutput.h" />
     <QtMoc Include="InstructionEditor.h" />
     <QtMoc Include="Options.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

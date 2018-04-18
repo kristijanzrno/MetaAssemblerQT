@@ -7,6 +7,7 @@
 #include "Instruction.h"
 #include "Directive.h"
 #include "Label.h"
+#include "StatusOutput.h"
 using namespace std;
 
 class Assembler {
@@ -21,12 +22,12 @@ private:
 	map <string, string> instructionsList;
 
 	FileHandler* fileHandler;
-	QTextEdit* statusText;
-
+	
+	StatusOutput* statusOutput;
 	bool isDirective(string word);
 	bool isInstruction(string word);
 
 	vector <Instruction*> instructions;
-	vector<Directive*>	directives;
-	vector<Label*>	labels;
+	vector <Directive*>	directives;
+	vector <Label*>	labels;
 };

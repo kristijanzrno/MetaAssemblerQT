@@ -57,6 +57,9 @@
     <ClCompile Include="Directive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StatusOutput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MetaAssembler.h">
@@ -101,5 +104,11 @@
     <ClInclude Include="Directive.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="StatusOutput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

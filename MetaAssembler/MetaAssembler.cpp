@@ -1,6 +1,7 @@
 #include "MetaAssembler.h"
 #include "Options.h"
 #include <sstream>
+#include "qfontdialog.h"
 using namespace std;
 
 MetaAssembler::MetaAssembler(QWidget *parent)
@@ -126,6 +127,10 @@ void MetaAssembler::tableViewHandler()
 
 void MetaAssembler::customiseHandler()
 {
+	bool done;
+	QFont font = QFontDialog::getFont(&done, this);
+	if (done)
+		ui.textEdit->setFont(font);
 }
 
 void MetaAssembler::optionsHandler()

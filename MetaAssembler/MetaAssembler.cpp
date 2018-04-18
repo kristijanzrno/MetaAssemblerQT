@@ -34,8 +34,8 @@ MetaAssembler::MetaAssembler(QWidget *parent)
 	connect(ui.actionError_Check, SIGNAL(triggered()), this, SLOT(errorCheck()));
 	connect(ui.actionError_Check_2, SIGNAL(triggered()), this, SLOT(errorCheck()));
 
-
-	//populate the tableView
+	assembler = new Assembler(ui.statusText);
+	//Populating the tableView
 	cedarTableModel = new QStandardItemModel(256, 16, this);
 
 	//Columns
@@ -152,4 +152,6 @@ void MetaAssembler::errorCheck()
 
 void MetaAssembler::assemble()
 {
+	string content = ui.textEdit->toPlainText().toStdString();
+	assembler->assemble(content);
 }

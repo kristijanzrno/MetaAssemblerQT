@@ -54,6 +54,9 @@
     <ClCompile Include="Assembler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Directive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MetaAssembler.h">
@@ -93,6 +96,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assembler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Directive.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

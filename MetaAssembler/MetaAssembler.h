@@ -5,7 +5,7 @@
 #include "ui_MetaAssembler.h"
 #include "FileHandler.h"
 #include "qstandarditemmodel.h"
-
+#include "Assembler.h"
 class MetaAssembler : public QMainWindow
 {
 	Q_OBJECT
@@ -38,5 +38,6 @@ private:
 	Ui::MetaAssemblerClass ui;
 	FileHandler fileHandler;
 	QStandardItemModel *cedarTableModel;
+	Assembler *assembler;
 
 };

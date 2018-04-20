@@ -46,7 +46,7 @@ void InstructionEditor::okHandler()
 	//Checking definition
 	string definition = ui.definitionText->text().toStdString();
 	for (char& c : definition) {
-		if (c >= '0' && c <= '9' || c >= 'a' && c <= 'f' || c >= 'A' && c < 'F') {
+		if (c >= '0' && c <= '9' || c >= 'a' && c <= 'f' || c >= 'A' && c <= 'F') {
 			continue;
 		}
 		errorMessage("The definition characters must be in hex range(0-F).");

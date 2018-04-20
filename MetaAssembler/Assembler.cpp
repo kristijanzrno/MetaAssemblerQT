@@ -57,7 +57,7 @@ bool Assembler::decode(string text)
 				break;
 			}
 			else if (isDirective(words[i])) {
-				if (words.size() != i + 1) {
+				if (words.size()-1 != i+1) {
 					//syntax error 
 					statusOutput->showMessage(lineCount, 3);
 					ready = false;
@@ -70,7 +70,7 @@ bool Assembler::decode(string text)
 						break;
 					}
 				}
-				
+
 				break;
 			}
 			else if (i == 0) {
@@ -78,11 +78,8 @@ bool Assembler::decode(string text)
 				if (lab[lab.size() - 1] == ':') {
 					lab = lab.substr(0, lab.size() - 1);
 				}
-				if (isDirective(words[i + 1])) {
-					equFlag = true;
-					continue;
-				}
-				Label *label = new Label(lineCount, lab, address, 0);
+				equFlag = true;
+				Label *label = new Label(lineCount, lab, 0, "");
 				labels.push_back(label);
 			}
 			else {
@@ -92,6 +89,7 @@ bool Assembler::decode(string text)
 			}
 
 		}
+		equFlag = false;
 		lineCount++;
 	}
 	if (ready)
@@ -107,13 +105,13 @@ void Assembler::addressing(string text) {
 	string line;
 	int address = 0;
 	string output;
-	int labelCounter;
+	int labelCounter = 0;
 	while (getline(stream, line)) {
 		istringstream wstream(line);
 		vector<string> words{ istream_iterator<string>{wstream}, istream_iterator<string>{} };
 		for (int i = 0; i < words.size(); i++) {
 			if (isInstruction(words[i])) {
-				address += 4;
+				address++;
 			}
 			else if (isDirective(words[i])) {
 				string directive = words[i];
@@ -122,9 +120,10 @@ void Assembler::addressing(string text) {
 					int calculatedAddress = calculateAddress(words[i + 1]);
 					if (calculatedAddress == -1) {
 						//address error
+						statusOutput->showMessage(0,0);
 					}
 					else {
-						address += calculatedAddress;
+						address = calculatedAddress;
 					}
 				}
 				else {
@@ -139,10 +138,11 @@ void Assembler::addressing(string text) {
 				}
 			}
 			else if (i == 0) {
-				labels.at(labelCounter)->setAddress(address);
+				labels.at(labelCounter)->setAddress(0);
 				labelCounter++;
 			}
 		}
+		statusOutput->showMessage(address, 1);
 		lineCount++;
 	}
 }
@@ -196,6 +196,30 @@ bool Assembler::isInstruction(string word)
 	return instructionsList.count(word);
 }
 
-int Assembler::calculateAddress(string address) {
-	return 0;
+int Assembler::calculateAddress(string address)
+{
+	if (address[0] == '#') {
+		//Hex address
+		address = address.substr(1, address.size());
+		for (int i = 0; i < address.size(); i++) {
+			if (!(address[i] >= '0' && address[i] <= '9' || address[i] >= 'A' && address[i] <= 'F')) {
+				//Error, invalid address
+				return -1;
+			}
+
+		}
+		return stoul(address, nullptr, 16);
+	}
+		if (address[0] == '$')
+			address = address.substr(1, address.size());
+
+		for (int i = 0; i < address.size(); i++) {
+			if (!(address[i] >= '0' && address[i] <= '9')) {
+				//Error, invalid address
+				return -1;
+			}
+		}
+		return stoi(address);
+		return 0;
 }
+

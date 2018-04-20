@@ -13,10 +13,11 @@ using namespace std;
 class Assembler {
 public:
 	Assembler(QTextEdit *statusText);
-	bool assemble(string text);
+	bool decode(string text);
 
 private:
 	int position;
+	void addressing(string text);
 	void reloadSet();
 
 	map <string, string> instructionsList;
@@ -26,6 +27,8 @@ private:
 	StatusOutput* statusOutput;
 	bool isDirective(string word);
 	bool isInstruction(string word);
+
+	int calculateAddress(string address);
 
 	vector <Instruction*> instructions;
 	vector <Directive*>	directives;

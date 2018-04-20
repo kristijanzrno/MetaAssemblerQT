@@ -154,7 +154,7 @@ void MetaAssembler::documentNHandler()
 void MetaAssembler::assemble()
 {
 	string content = ui.textEdit->toPlainText().toStdString();
-	assembler->assemble(content);
+	assembler->decode(content);
 }
 
 void MetaAssembler::statusToggle()

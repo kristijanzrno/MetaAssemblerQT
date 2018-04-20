@@ -1,5 +1,6 @@
 #include "Directive.h"
 
-Directive::Directive(int line, string type, string extension)
+Directive::Directive(int address, int line, string type, string extension)
 {
+	this->address = address;
 }

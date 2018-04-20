@@ -3,8 +3,9 @@
 using namespace std;
 class Directive {
 public:
-	Directive(int line, string type, string extension);
+	Directive(int address, int line, string type, string extension);
 private:
+	int address;
 	string type;
 	string definition;
 };

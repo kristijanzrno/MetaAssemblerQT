@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>718</width>
-    <height>409</height>
+    <width>656</width>
+    <height>526</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -32,7 +32,11 @@
      </layout>
     </item>
     <item>
-     <widget class="QTextEdit" name="statusText"/>
+     <widget class="QTextEdit" name="statusText">
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -41,7 +45,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>718</width>
+     <width>656</width>
      <height>22</height>
     </rect>
    </property>
@@ -53,7 +57,7 @@
     <addaction name="actionOpen"/>
     <addaction name="actionSave_As"/>
     <addaction name="actionExit"/>
-    <addaction name="actionError_Check_2"/>
+    <addaction name="separator"/>
     <addaction name="actionAssemble_to_CDM"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -79,6 +83,7 @@
     </property>
     <addaction name="actionEditor"/>
     <addaction name="actionCDM_Table_View"/>
+    <addaction name="actionStatus_View"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -116,7 +121,6 @@
    <addaction name="actionToolbarCopy"/>
    <addaction name="actionToolbarPaste"/>
    <addaction name="separator"/>
-   <addaction name="actionError_Check"/>
    <addaction name="actionConvertToCDM"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -289,6 +293,11 @@
   <action name="actionAssemble_to_CDM">
    <property name="text">
     <string>Assemble to CDM</string>
+   </property>
+  </action>
+  <action name="actionStatus_View">
+   <property name="text">
+    <string>Status View</string>
    </property>
   </action>
  </widget>

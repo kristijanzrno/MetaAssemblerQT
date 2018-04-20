@@ -3,7 +3,7 @@
 using namespace std;
 class Instruction {
 public:
-	Instruction(int line, string type, string definition);
+	Instruction(int address, int line, string type, string definition);
 
 	void setValue(string val);
 	void setAddress();
@@ -14,6 +14,7 @@ public:
 
 private:
 	int line;
+	int address;
 	string type;
 	string definition;
 	string value;

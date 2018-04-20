@@ -4,8 +4,8 @@
 using namespace std;
 class Label {
 public:
-	Label(int line, string text, string address);
+	Label(int line, string text, int address);
 private:
-	string text;
+	int text;
 	string address;
 };

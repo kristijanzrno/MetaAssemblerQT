@@ -1,9 +1,10 @@
 #include "Instruction.h"
 
-Instruction::Instruction(int line, string type, string definition)
+Instruction::Instruction(int address, int line, string type, string definition)
 {
 	this->type = type;
 	this->definition = definition;
+	this->address = address;
 }
 
 void Instruction::setValue(string val)

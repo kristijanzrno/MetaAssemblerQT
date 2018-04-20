@@ -15,7 +15,7 @@ bool Assembler::assemble(string text)
 	directives.clear();
 	labels.clear();
 	int lineCount = 0;
-	string address;
+	int address = 0;
 	istringstream stream(text);
 	string line;
 	while (getline(stream, line)) {
@@ -23,26 +23,26 @@ bool Assembler::assemble(string text)
 		vector<string> words{ istream_iterator<string>{wstream}, istream_iterator<string>{} };
 		for (int i = 0; i < words.size(); i++) {
 			if (isInstruction(words[i])) {
-				Instruction *inst = new Instruction(lineCount, words[i], instructionsList[words[i]]);
+				Instruction *inst = new Instruction(address, lineCount, words[i], instructionsList[words[i]]);
 				if (inst->getDefinition().length() < 3) {
 					if (!(i == words.size()-1)) {
 						if (i + 1 == words.size()-1){
-							//success
+							//Success
 						inst->setValue(words[i + 1]);
 						}
 						else {
-							//too many arguments
+							//Too many arguments
 							statusOutput->showMessage(lineCount, 0);
 						}
 					}
 					else {
-						//operand missing
+						//Operand missing
 						statusOutput->showMessage(lineCount, 1);
 					}
 				}
 				else {
 					if (i < words.size()-1) {
-						//unnecessary argument
+						//Unnecessary argument
 						statusOutput->showMessage(lineCount, 2);
 					}
 					else {
@@ -51,9 +51,7 @@ bool Assembler::assemble(string text)
 
 				}
 				instructions.push_back(inst);
-
 				break;
-				
 			}
 			else if (isDirective(words[i])) {
 				string directive = words[i];
@@ -62,17 +60,17 @@ bool Assembler::assemble(string text)
 					directive = words[i].substr(0, 2);
 					extension = words[i].substr(2, 4);
 				}
-				Directive *dir = new Directive(lineCount, directive, extension);
+				Directive *dir = new Directive(address, lineCount, directive, extension);
 				directives.push_back(dir);
 				break;
 			}
-			else if (i == 0) {
+			else if (i == 0 && words[i][words[i].size()-1]==':') {
 				Label *label = new Label(lineCount, words[i], address);
 				labels.push_back(label);
-				
 			}
 			else {
-				//Unknown error
+				//Syntax error
+				statusOutput->showMessage(lineCount, 3);
 			}
 
 		}

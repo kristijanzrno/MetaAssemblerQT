@@ -57,6 +57,7 @@ public:
     QAction *actionConvertToCDM;
     QAction *actionError_Check_2;
     QAction *actionAssemble_to_CDM;
+    QAction *actionStatus_View;
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout_3;
     QHBoxLayout *horizontalLayout;
@@ -77,7 +78,7 @@ public:
     {
         if (MetaAssemblerClass->objectName().isEmpty())
             MetaAssemblerClass->setObjectName(QStringLiteral("MetaAssemblerClass"));
-        MetaAssemblerClass->resize(718, 409);
+        MetaAssemblerClass->resize(656, 526);
         MetaAssemblerClass->setMinimumSize(QSize(0, 0));
         actionNew = new QAction(MetaAssemblerClass);
         actionNew->setObjectName(QStringLiteral("actionNew"));
@@ -160,6 +161,8 @@ public:
         actionError_Check_2->setObjectName(QStringLiteral("actionError_Check_2"));
         actionAssemble_to_CDM = new QAction(MetaAssemblerClass);
         actionAssemble_to_CDM->setObjectName(QStringLiteral("actionAssemble_to_CDM"));
+        actionStatus_View = new QAction(MetaAssemblerClass);
+        actionStatus_View->setObjectName(QStringLiteral("actionStatus_View"));
         centralWidget = new QWidget(MetaAssemblerClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         verticalLayout_3 = new QVBoxLayout(centralWidget);
@@ -184,13 +187,14 @@ public:
 
         statusText = new QTextEdit(centralWidget);
         statusText->setObjectName(QStringLiteral("statusText"));
+        statusText->setReadOnly(true);
 
         verticalLayout_3->addWidget(statusText);
 
         MetaAssemblerClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MetaAssemblerClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 718, 22));
+        menuBar->setGeometry(QRect(0, 0, 656, 22));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuEdit = new QMenu(menuBar);
@@ -220,7 +224,7 @@ public:
         menuFile->addAction(actionOpen);
         menuFile->addAction(actionSave_As);
         menuFile->addAction(actionExit);
-        menuFile->addAction(actionError_Check_2);
+        menuFile->addSeparator();
         menuFile->addAction(actionAssemble_to_CDM);
         menuEdit->addAction(menuReformat->menuAction());
         menuEdit->addAction(actionCut);
@@ -231,6 +235,7 @@ public:
         menuReformat->addAction(actionDocument);
         menuView->addAction(actionEditor);
         menuView->addAction(actionCDM_Table_View);
+        menuView->addAction(actionStatus_View);
         menuTools->addAction(actionCustomise);
         menuTools->addAction(actionOptions);
         menuHelp->addAction(action68K_General_Help);
@@ -244,7 +249,6 @@ public:
         mainToolBar->addAction(actionToolbarCopy);
         mainToolBar->addAction(actionToolbarPaste);
         mainToolBar->addSeparator();
-        mainToolBar->addAction(actionError_Check);
         mainToolBar->addAction(actionConvertToCDM);
 
         retranslateUi(MetaAssemblerClass);
@@ -282,6 +286,7 @@ public:
         actionConvertToCDM->setText(QApplication::translate("MetaAssemblerClass", "ConvertToCDM", nullptr));
         actionError_Check_2->setText(QApplication::translate("MetaAssemblerClass", "Error Check", nullptr));
         actionAssemble_to_CDM->setText(QApplication::translate("MetaAssemblerClass", "Assemble to CDM", nullptr));
+        actionStatus_View->setText(QApplication::translate("MetaAssemblerClass", "Status View", nullptr));
         menuFile->setTitle(QApplication::translate("MetaAssemblerClass", "File", nullptr));
         menuEdit->setTitle(QApplication::translate("MetaAssemblerClass", "Edit", nullptr));
         menuReformat->setTitle(QApplication::translate("MetaAssemblerClass", "Reformat", nullptr));

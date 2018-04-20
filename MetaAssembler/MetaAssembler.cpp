@@ -32,8 +32,7 @@ MetaAssembler::MetaAssembler(QWidget *parent)
 	connect(ui.actionToolbarCopy, SIGNAL(triggered()), this, SLOT(copyHandler()));
 	connect(ui.actionAssemble_to_CDM, SIGNAL(triggered()), this, SLOT(assemble()));
 	connect(ui.actionConvertToCDM, SIGNAL(triggered()), this, SLOT(assemble()));
-	connect(ui.actionError_Check, SIGNAL(triggered()), this, SLOT(errorCheck()));
-	connect(ui.actionError_Check_2, SIGNAL(triggered()), this, SLOT(errorCheck()));
+	connect(ui.actionStatus_View, SIGNAL(triggered()), this, SLOT(statusToggle()));
 
 	assembler = new Assembler(ui.statusText);
 	//Populating the tableView
@@ -151,12 +150,17 @@ void MetaAssembler::documentNHandler()
 {
 }
 
-void MetaAssembler::errorCheck()
-{
-}
 
 void MetaAssembler::assemble()
 {
 	string content = ui.textEdit->toPlainText().toStdString();
 	assembler->assemble(content);
+}
+
+void MetaAssembler::statusToggle()
+{
+	if (ui.statusText->isHidden())
+		ui.statusText->show();
+	else
+		ui.statusText->hide();
 }

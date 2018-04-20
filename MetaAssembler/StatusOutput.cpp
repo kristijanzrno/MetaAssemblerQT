@@ -10,19 +10,21 @@ StatusOutput::StatusOutput(QTextEdit * statusText)
 void StatusOutput::showMessage(int line, int code)
 {
 	int lineNumber = line + 1;
-	//QTextCursor *textCursor = statusText->textCursor;
 	string html = "</font><br>";
 	string color = findColor(2);
 	string message;
 	switch (code) {
 	case 0:
-		message = "Too many arguments at line " + to_string(lineNumber);
+		message = "Syntax error at line: " + to_string(lineNumber);
 		break;
 	case 1:
-		message = "Operand missing at line " + to_string(lineNumber);
+		message = "Operand missing at line: " + to_string(lineNumber);
 		break;
 	case 2:
-		message = "Found an unneccesary argument at line " + to_string(lineNumber);
+		message = "Found an unneccesary argument at line: " + to_string(lineNumber);
+		break;
+	case 3:
+		message = "Syntax error at line: " + to_string(lineNumber);
 		break;
 	}
 	statusText->insertHtml(QString::fromStdString((color + message + html)));

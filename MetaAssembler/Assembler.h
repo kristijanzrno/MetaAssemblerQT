@@ -18,6 +18,7 @@ public:
 private:
 	int position;
 	void addressing(string text);
+	void assembling(string text);
 	void reloadSet();
 
 	map <string, string> instructionsList;
@@ -28,7 +29,7 @@ private:
 	bool isDirective(string word);
 	bool isInstruction(string word);
 
-	int calculateAddress(string address);
+	int toInt(string address);
 
 	vector <Instruction*> instructions;
 	vector <Directive*>	directives;

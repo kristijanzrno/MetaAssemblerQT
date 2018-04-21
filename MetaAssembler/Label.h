@@ -4,13 +4,16 @@
 using namespace std;
 class Label {
 public:
-	Label(int line, string text, int address, string value);
-	void setValue(string mValue);
+	Label(int line, string text, int address, int value);
+	void setValue(int mValue);
 	void setAddress(int mAddress);
-	string getValue();
+	int getValue();
+	int getAddress();
+	string getText();
+
 
 private:
-	int text;
-	string address;
-	string value;
+	string text;
+	int address;
+	int value;
 };

@@ -20,22 +20,49 @@
    <string>MetaAssembler</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout_3">
+   <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QTextEdit" name="textEdit"/>
-      </item>
-      <item>
-       <widget class="QTableView" name="tableView"/>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="QTextEdit" name="statusText">
-      <property name="readOnly">
-       <bool>true</bool>
+     <widget class="QSplitter" name="splitter_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
       </property>
+      <widget class="QSplitter" name="splitter">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <widget class="QTextEdit" name="textEdit"/>
+       <widget class="QTableView" name="tableView">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QTextEdit" name="statusText">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>130</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>130</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -64,18 +91,11 @@
     <property name="title">
      <string>Edit</string>
     </property>
-    <widget class="QMenu" name="menuReformat">
-     <property name="title">
-      <string>Reformat</string>
-     </property>
-     <addaction name="actionSelection"/>
-     <addaction name="actionDocument"/>
-    </widget>
-    <addaction name="menuReformat"/>
     <addaction name="actionCut"/>
     <addaction name="actionCopy"/>
     <addaction name="actionPaste"/>
     <addaction name="actionDelete"/>
+    <addaction name="actionClear_Status_View"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -116,7 +136,6 @@
    <addaction name="actionToolbarOpen"/>
    <addaction name="actionToolbarSave"/>
    <addaction name="separator"/>
-   <addaction name="actionToolbarReformat"/>
    <addaction name="actionToolbarCut"/>
    <addaction name="actionToolbarCopy"/>
    <addaction name="actionToolbarPaste"/>
@@ -298,6 +317,11 @@
   <action name="actionStatus_View">
    <property name="text">
     <string>Status View</string>
+   </property>
+  </action>
+  <action name="actionClear_Status_View">
+   <property name="text">
+    <string>Clear Status View</string>
    </property>
   </action>
  </widget>

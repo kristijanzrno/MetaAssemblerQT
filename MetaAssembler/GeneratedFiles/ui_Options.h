@@ -45,6 +45,7 @@ public:
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         tableView = new QTableView(Options);
         tableView->setObjectName(QStringLiteral("tableView"));
+        tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
         horizontalLayout->addWidget(tableView);
 

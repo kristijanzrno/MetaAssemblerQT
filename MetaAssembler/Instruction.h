@@ -23,5 +23,4 @@ private:
 	string type;
 	string definition;
 	string value;
-	vector<Label*> labels;
 };

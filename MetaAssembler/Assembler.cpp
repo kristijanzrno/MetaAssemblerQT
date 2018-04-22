@@ -61,7 +61,7 @@ bool Assembler::decode(string text)
 			else if (isDirective(words[i])) {
 				if (words.size()-1 != i+1) {
 					//Syntax error 
-					statusOutput->showMessage(lineCount, 3);
+					statusOutput->showMessage(lineCount, 2);
 					ready = false;
 					break;
 				}
@@ -73,8 +73,23 @@ bool Assembler::decode(string text)
 							labels.at(labels.size() - 1)->setValue(value);
 						}
 						else {
-							//Invalid syntax
-							ready = false;
+							bool usingLabel = false;
+							for (int j = 0; j < labels.size(); j++) {
+								if (words[i + 1] == labels.at(j)->getText()) {
+									usingLabel = true;
+									if (labels.at(j)->getValue() == INT_MIN) {
+										labels.at(labels.size() - 1)->setValue(labels.at(j)->getAddress());
+									}
+									else {
+										labels.at(labels.size() - 1)->setValue(labels.at(j)->getValue());
+									}
+								}
+							}
+							if (!usingLabel) {
+								//Invalid syntax
+								statusOutput->showMessage(lineCount, 3);
+								ready = false;
+							}
 						}
 						break;
 					}
@@ -93,7 +108,7 @@ bool Assembler::decode(string text)
 			}
 			else {
 				//Syntax error
-				statusOutput->showMessage(lineCount, 3);
+				statusOutput->showMessage(lineCount, 2);
 				ready = false;
 			}
 
@@ -104,12 +119,12 @@ bool Assembler::decode(string text)
 	if (ready)
 		addressing(text);
 	else
-		statusOutput->showMessage(-1, 4);
+		statusOutput->showMessage(3, 0);
 	return false;
 }
 
 void Assembler::addressing(string text) {
-	int lineCount;
+	int lineCount = 0;
 	istringstream stream(text);
 	string line;
 	int address = 0;
@@ -132,7 +147,7 @@ void Assembler::addressing(string text) {
 					int calculatedAddress = cUtils->toInt(words[i + 1]);
 					if (calculatedAddress == INT_MIN) {
 						//address error
-						statusOutput->showMessage(0,0);
+						statusOutput->showMessage(lineCount, 4);
 						ready = false;
 					}
 					else {
@@ -160,19 +175,18 @@ void Assembler::addressing(string text) {
 	if (ready)
 		assembling();
 	else
-		statusOutput->showMessage(address, 1);
 		//error message
+		statusOutput->showMessage(0,3);
 }
 void Assembler::assembling()
 {
 	string output;
-/*	for (int i = 0; i < labels.size(); i++) {
-		sText->append(QString::fromStdString(to_string(labels.at(i)->getValue())));
-	}
-*/
 	for (int i = 0; i < instructions.size(); i++) {
-		sText->append(QString::fromStdString(to_string(instructions.at(i)->getAddress())));
-		sText->append(QString::fromStdString(instructions.at(i)->decode(labels, cUtils)));
+		string value = instructions.at(i)->decode(labels, cUtils);
+		if (value == "**") {
+			statusOutput->showMessage(0,3);
+			statusOutput->showMessage(instructions.at(i)->getLine(), 0);
+		}
 
 	}
 }

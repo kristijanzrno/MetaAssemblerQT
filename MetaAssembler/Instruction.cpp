@@ -7,9 +7,9 @@ using namespace std;
 Instruction::Instruction(int address, int line, string type, string definition)
 {
 	this->type = type;
+	this->line = line;
 	this->definition = definition;
 	this->address = address;
-	this->labels = labels;
 }
 
 void Instruction::setValue(string val)
@@ -34,7 +34,7 @@ string Instruction::getDefinition()
 
 int Instruction::getLine()
 {
-	return 0;
+	return line;
 }
 
 int Instruction::getAddress()
@@ -61,7 +61,8 @@ string Instruction::decode(vector<Label*> labels, ConversionUtils * cUtils)
 			}
 		}
 	}
- 
+	if (val == INT_MIN && !usesLabel)
+		return "**";
 	stringstream stream;
 	stream << hex << val;
 	value = stream.str();

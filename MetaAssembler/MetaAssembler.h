@@ -18,8 +18,7 @@ private slots:
 	void openHandler();
 	void saveHandler();
 	void exitHandler();
-	void reformatSelectionHandler();
-	void reformatDocumentHandler();
+	void clearStatusHandler();
 	void cutHandler();
 	void copyHandler();
 	void pasteHandler();

@@ -2,6 +2,7 @@
 #include "Options.h"
 #include <sstream>
 #include "qfontdialog.h"
+#include "qdesktopservices.h"
 using namespace std;
 
 MetaAssembler::MetaAssembler(QWidget *parent)
@@ -12,8 +13,6 @@ MetaAssembler::MetaAssembler(QWidget *parent)
 	connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(openHandler()));
 	connect(ui.actionSave_As, SIGNAL(triggered()), this, SLOT(saveHandler()));
 	connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(exitHandler()));
-	connect(ui.actionSelection, SIGNAL(triggered()), this, SLOT(reformatSelectionHandler()));
-	connect(ui.actionDocument, SIGNAL(triggered()), this, SLOT(reformatDocumentHandler()));
 	connect(ui.actionCopy, SIGNAL(triggered()), this, SLOT(copyHandler()));
 	connect(ui.actionCut, SIGNAL(triggered()), this, SLOT(cutHandler()));
 	connect(ui.actionPaste, SIGNAL(triggered()), this, SLOT(pasteHandler()));
@@ -33,7 +32,9 @@ MetaAssembler::MetaAssembler(QWidget *parent)
 	connect(ui.actionAssemble_to_CDM, SIGNAL(triggered()), this, SLOT(assemble()));
 	connect(ui.actionConvertToCDM, SIGNAL(triggered()), this, SLOT(assemble()));
 	connect(ui.actionStatus_View, SIGNAL(triggered()), this, SLOT(statusToggle()));
+ 	connect(ui.actionClear_Status_View, SIGNAL(triggered()), this, SLOT(clearStatusHandler()));
 
+	
 	assembler = new Assembler(ui.statusText);
 	//Populating the tableView
 	cedarTableModel = new QStandardItemModel(256, 16, this);
@@ -79,12 +80,9 @@ void MetaAssembler::exitHandler()
 	close();
 }
 
-void MetaAssembler::reformatSelectionHandler()
+void MetaAssembler::clearStatusHandler()
 {
-}
-
-void MetaAssembler::reformatDocumentHandler()
-{
+	ui.statusText->clear();
 }
 
 void MetaAssembler::cutHandler()
@@ -140,6 +138,7 @@ void MetaAssembler::optionsHandler()
 
 void MetaAssembler::helpHandler()
 {
+	QDesktopServices::openUrl(QUrl("http://mrjester.hapisan.com/04_MC68/"));
 }
 
 void MetaAssembler::aboutHandler()

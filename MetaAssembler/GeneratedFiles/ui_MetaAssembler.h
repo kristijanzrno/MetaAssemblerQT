@@ -18,11 +18,11 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QSplitter>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTableView>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QToolBar>
-#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -58,16 +58,17 @@ public:
     QAction *actionError_Check_2;
     QAction *actionAssemble_to_CDM;
     QAction *actionStatus_View;
+    QAction *actionClear_Status_View;
     QWidget *centralWidget;
-    QVBoxLayout *verticalLayout_3;
     QHBoxLayout *horizontalLayout;
+    QSplitter *splitter_2;
+    QSplitter *splitter;
     QTextEdit *textEdit;
     QTableView *tableView;
     QTextEdit *statusText;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuEdit;
-    QMenu *menuReformat;
     QMenu *menuView;
     QMenu *menuTools;
     QMenu *menuHelp;
@@ -163,33 +164,38 @@ public:
         actionAssemble_to_CDM->setObjectName(QStringLiteral("actionAssemble_to_CDM"));
         actionStatus_View = new QAction(MetaAssemblerClass);
         actionStatus_View->setObjectName(QStringLiteral("actionStatus_View"));
+        actionClear_Status_View = new QAction(MetaAssemblerClass);
+        actionClear_Status_View->setObjectName(QStringLiteral("actionClear_Status_View"));
         centralWidget = new QWidget(MetaAssemblerClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        verticalLayout_3 = new QVBoxLayout(centralWidget);
-        verticalLayout_3->setSpacing(6);
-        verticalLayout_3->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
-        horizontalLayout = new QHBoxLayout();
+        horizontalLayout = new QHBoxLayout(centralWidget);
         horizontalLayout->setSpacing(6);
+        horizontalLayout->setContentsMargins(11, 11, 11, 11);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        textEdit = new QTextEdit(centralWidget);
+        splitter_2 = new QSplitter(centralWidget);
+        splitter_2->setObjectName(QStringLiteral("splitter_2"));
+        splitter_2->setOrientation(Qt::Vertical);
+        splitter = new QSplitter(splitter_2);
+        splitter->setObjectName(QStringLiteral("splitter"));
+        splitter->setMinimumSize(QSize(0, 0));
+        splitter->setOrientation(Qt::Horizontal);
+        textEdit = new QTextEdit(splitter);
         textEdit->setObjectName(QStringLiteral("textEdit"));
-
-        horizontalLayout->addWidget(textEdit);
-
-        tableView = new QTableView(centralWidget);
+        splitter->addWidget(textEdit);
+        tableView = new QTableView(splitter);
         tableView->setObjectName(QStringLiteral("tableView"));
-
-        horizontalLayout->addWidget(tableView);
-
-
-        verticalLayout_3->addLayout(horizontalLayout);
-
-        statusText = new QTextEdit(centralWidget);
+        tableView->setEnabled(true);
+        tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        splitter->addWidget(tableView);
+        splitter_2->addWidget(splitter);
+        statusText = new QTextEdit(splitter_2);
         statusText->setObjectName(QStringLiteral("statusText"));
+        statusText->setMinimumSize(QSize(0, 130));
+        statusText->setMaximumSize(QSize(16777215, 130));
         statusText->setReadOnly(true);
+        splitter_2->addWidget(statusText);
 
-        verticalLayout_3->addWidget(statusText);
+        horizontalLayout->addWidget(splitter_2);
 
         MetaAssemblerClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MetaAssemblerClass);
@@ -199,8 +205,6 @@ public:
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuEdit = new QMenu(menuBar);
         menuEdit->setObjectName(QStringLiteral("menuEdit"));
-        menuReformat = new QMenu(menuEdit);
-        menuReformat->setObjectName(QStringLiteral("menuReformat"));
         menuView = new QMenu(menuBar);
         menuView->setObjectName(QStringLiteral("menuView"));
         menuTools = new QMenu(menuBar);
@@ -226,13 +230,11 @@ public:
         menuFile->addAction(actionExit);
         menuFile->addSeparator();
         menuFile->addAction(actionAssemble_to_CDM);
-        menuEdit->addAction(menuReformat->menuAction());
         menuEdit->addAction(actionCut);
         menuEdit->addAction(actionCopy);
         menuEdit->addAction(actionPaste);
         menuEdit->addAction(actionDelete);
-        menuReformat->addAction(actionSelection);
-        menuReformat->addAction(actionDocument);
+        menuEdit->addAction(actionClear_Status_View);
         menuView->addAction(actionEditor);
         menuView->addAction(actionCDM_Table_View);
         menuView->addAction(actionStatus_View);
@@ -244,7 +246,6 @@ public:
         mainToolBar->addAction(actionToolbarOpen);
         mainToolBar->addAction(actionToolbarSave);
         mainToolBar->addSeparator();
-        mainToolBar->addAction(actionToolbarReformat);
         mainToolBar->addAction(actionToolbarCut);
         mainToolBar->addAction(actionToolbarCopy);
         mainToolBar->addAction(actionToolbarPaste);
@@ -287,9 +288,9 @@ public:
         actionError_Check_2->setText(QApplication::translate("MetaAssemblerClass", "Error Check", nullptr));
         actionAssemble_to_CDM->setText(QApplication::translate("MetaAssemblerClass", "Assemble to CDM", nullptr));
         actionStatus_View->setText(QApplication::translate("MetaAssemblerClass", "Status View", nullptr));
+        actionClear_Status_View->setText(QApplication::translate("MetaAssemblerClass", "Clear Status View", nullptr));
         menuFile->setTitle(QApplication::translate("MetaAssemblerClass", "File", nullptr));
         menuEdit->setTitle(QApplication::translate("MetaAssemblerClass", "Edit", nullptr));
-        menuReformat->setTitle(QApplication::translate("MetaAssemblerClass", "Reformat", nullptr));
         menuView->setTitle(QApplication::translate("MetaAssemblerClass", "View", nullptr));
         menuTools->setTitle(QApplication::translate("MetaAssemblerClass", "Tools", nullptr));
         menuHelp->setTitle(QApplication::translate("MetaAssemblerClass", "Help", nullptr));

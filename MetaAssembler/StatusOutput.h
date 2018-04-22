@@ -9,4 +9,5 @@ public:
 private:
 	std::string findColor(int code);
 	QTextEdit * statusText;
+	void introMessages();
 };

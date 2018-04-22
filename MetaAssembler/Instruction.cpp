@@ -54,8 +54,10 @@ string Instruction::decode(vector<Label*> labels, ConversionUtils * cUtils)
 					val = labels.at(i)->getAddress();
 				else
  					val = labels.at(i)->getValue();
-				if (definition.size() == 2)
+				if (definition.size() == 2) {
 					val = val - address;
+					val -= 1;
+				}
 				break;
 				
 			}
@@ -68,6 +70,10 @@ string Instruction::decode(vector<Label*> labels, ConversionUtils * cUtils)
 	value = stream.str();
 	if (val < 0)
 		return value.substr(value.size() - (4 - definition.size()), value.size());
+	else if (value.size() > (4 - definition.size())) {
+		//size warning
+		value = "&" + value.substr(0, (4 -definition.size()));
+	}
 	return value;
 	}
 

@@ -2,39 +2,56 @@
 #include <sstream>
 using namespace std;
 
-Assembler::Assembler(QTextEdit* statusText, QStandardItemModel *itemModel)
+Assembler::Assembler(QTextEdit* statusText, QStandardItemModel* itemModel)
 {
 	fileHandler = new FileHandler();
 	statusOutput = new StatusOutput(statusText);
+	cUtils = new ConversionUtils();
+
 	this->itemModel = itemModel;
 	this->sText = statusText;
-	cUtils = new ConversionUtils();
 	reloadSet();
 }
 
 string Assembler::decode(string text)
 {
+	if (text == "")
+		return "";
+
+	transform(text.begin(), text.end(), text.begin(), ::toupper);
+
 	instructions.clear();
 	directives.clear();
 	labels.clear();
+
 	int lineCount = 0;
 	int address = 0;
-	transform(text.begin(), text.end(), text.begin(), ::toupper);
-	istringstream stream(text);
-	string line;
 	bool equFlag = false;
 	bool ready = true;
+
+	istringstream stream(text);
+	string line;
+
 	while (getline(stream, line)) {
 		istringstream wstream(line);
 		vector<string> words{ istream_iterator<string>{wstream}, istream_iterator<string>{} };
+
 		for (int i = 0; i < words.size(); i++) {
+
 			if (isInstruction(words[i])) {
 				Instruction *inst = new Instruction(address, lineCount, words[i], instructionsList[words[i]]);
 				if (inst->getDefinition().length() < 3) {
 					if (!(i == words.size() - 1)) {
 						if (i + 1 == words.size() - 1) {
-							//Success
-							inst->setValue(words[i + 1]);
+							if (words[i + 1].size() < 8) {
+								//Success
+								inst->setValue(words[i + 1]);
+							}
+							else {
+								//Too big value
+								statusOutput->showMessage(lineCount, 12);
+								ready = false;
+							}
 						}
 						else {
 							//Too many arguments
@@ -60,7 +77,7 @@ string Assembler::decode(string text)
 				break;
 			}
 			else if (isDirective(words[i])) {
-				if (words.size()-1 != i+1) {
+				if (words.size() - 1 != i + 1) {
 					//Syntax error 
 					statusOutput->showMessage(lineCount, 0);
 					ready = false;
@@ -69,6 +86,11 @@ string Assembler::decode(string text)
 				string directive = words[i];
 				if (equFlag) {
 					if (directive == "EQU") {
+						if (words[i + 1].size() < 8) {
+							statusOutput->showMessage(lineCount, 12);
+							ready = false;
+							break;
+						}
 						int value = cUtils->toInt(words[i + 1]);
 						if (value != INT_MIN) {
 							labels.at(labels.size() - 1)->setValue(value);
@@ -122,14 +144,19 @@ string Assembler::decode(string text)
 }
 
 string Assembler::addressing(string text) {
+
 	int lineCount = 0;
-	istringstream stream(text);
-	string line;
 	int address = 0;
 	int labelCounter = 0;
 	int instructionCounter = 0;
+
 	bool ready = true;
 	bool equFlag = false;
+
+	istringstream stream(text);
+	string line;
+	
+	
 	while (getline(stream, line)) {
 		istringstream wstream(line);
 		vector<string> words{ istream_iterator<string>{wstream}, istream_iterator<string>{} };
@@ -143,9 +170,17 @@ string Assembler::addressing(string text) {
 				string directive = words[i];
 				if (directive == "ORG") {
 					//Setting the address
+					if (words[i + 1].size() > 8) {
+						statusOutput->showMessage(lineCount, 12);
+						ready = false;
+						break;
+					}
+					if (words.size() != i + 1)
+						if (words[i + 1] == "EQU")
+							equFlag = true;
 					int calculatedAddress = cUtils->toInt(words[i + 1]);
 					if (calculatedAddress == INT_MIN) {
-						//address error
+						//Address error
 						statusOutput->showMessage(lineCount, 4);
 						ready = false;
 					}
@@ -165,19 +200,29 @@ string Assembler::addressing(string text) {
 					}
 				}
 				else {
-					string extension = "";
-					if (words[i].size() == 4) {
-						directive = words[i].substr(0, 2);
-						extension = words[i].substr(2, 4);
+					//Value size check
+					if (words[i + 1].size() > 8) {
+						statusOutput->showMessage(lineCount, 12);
+						ready = false;
+						break;
 					}
-					Directive *dir = new Directive(address, lineCount, directive, extension, words[i + 1]);
+					Directive *dir = new Directive(address, lineCount, directive, words[i + 1]);
 					directives.push_back(dir);
-					address += dir->getSpace();
+					int moveTo = dir->getSpace(labels, cUtils);
+					if (moveTo != INT_MIN) {
+						address += moveTo;
+					}
+					else {
+						statusOutput->showMessage(lineCount, 0);
+						ready = false;
+						break;
+					}
 				}
 			}
 			else if (i == 0) {
-				if (words[i + 1] == "EQU")
-					equFlag = true;
+				if(words.size() != i+1)
+					if (words[i + 1] == "EQU")
+						equFlag = true;
 				labels.at(labelCounter)->setAddress(address);
 				labelCounter++;
 			}
@@ -185,11 +230,16 @@ string Assembler::addressing(string text) {
 		lineCount++;
 		equFlag = false;
 	}
+	//Checking for address overflow
+	if (address > 4096)
+		statusOutput->showMessage(0, 11);
+
 	if (ready)
 		return assembling();
 	else
 		//error message
-		statusOutput->showMessage(0,3);
+		statusOutput->showMessage(0, 3);
+
 	return "-1";
 }
 
@@ -197,31 +247,47 @@ string Assembler::assembling()
 {
 	string output;
 	stringstream stream;
-	stream << "# Instructions\n\n";
+	stream << "# Instructions\n";
 	for (int i = 0; i < instructions.size(); i++) {
 		string value = "";
-		if (instructions.at(i)->getDefinition().size() != 4) 
-			 value = instructions.at(i)->decode(labels, cUtils);
+		if (instructions.at(i)->getDefinition().size() != 4)
+			value = instructions.at(i)->decode(labels, cUtils);
 		if (value == "**") {
 			//Syntax error
-			statusOutput->showMessage(0,3);
+			statusOutput->showMessage(0, 3);
 			statusOutput->showMessage(instructions.at(i)->getLine(), 0);
 			return "-1";
 		}
 		else {
+			if (value[0] == '&') {
+				statusOutput->showMessage(instructions.at(i)->getLine(), 9);
+				value = value.substr(1, value.size());
+			}
 			int address = instructions.at(i)->getAddress();
 			string val = instructions.at(i)->getDefinition() + value;
 			stream << hex << address << " : " << val << endl;
-			itemModel->setItem((address/16), (address%16), new QStandardItem(QString::fromStdString(val)));
+			itemModel->setItem((address / 16), (address % 16), new QStandardItem(QString::fromStdString(val)));
 
 		}
 	}
-	stream << "\n# Directives\n\n";
+	stream << "\n# Directives\n";
 	for (int i = 0; i < directives.size(); i++) {
+		string value = directives.at(i)->getDefinition();
+		if (directives.at(i)->getType() == "DC") {
+			if (value[0] == '&') {
+				statusOutput->showMessage(directives.at(i)->getLine(), 9);
+				value = value.substr(1, value.size());
+			}
+			int address = directives.at(i)->getAddress();
+			stream << hex << address << " : " << value << endl;
+			itemModel->setItem((address / 16), (address % 16), new QStandardItem(QString::fromStdString(value)));
 
+		}
 	}
 	output = stream.str();
+	sText->append(QString::fromStdString("Output:"));
 	sText->append(QString::fromStdString(stream.str()));
+	sText->ensureCursorVisible();
 	return output;
 
 }
@@ -256,17 +322,8 @@ bool Assembler::isDirective(string word)
 	if (word == "ORG" || word == "EQU")
 		return true;
 
-	string dir = word.substr(0, 2);
-	string def = word.substr(2, word.size());
-	if (dir == "DC" || dir == "DS") {
-		if (word.size() == 2) {
-			return true;
-		}
-		else {
-			if (def == ".B" || def == ".W" || def == ".L") {
-				return true;
-			}
-		}
+	if (word == "DC" || word == "DS") {
+		return true;
 	}
 	return false;
 }

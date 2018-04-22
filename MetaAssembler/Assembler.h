@@ -15,7 +15,7 @@ using namespace std;
 
 class Assembler {
 public:
-	Assembler(QTextEdit*statusText, QStandardItemModel* itemModel);
+	Assembler(QTextEdit* statusText, QStandardItemModel* itemModel);
 	string decode(string text);
 	void reloadSet();
 
@@ -28,9 +28,8 @@ private:
 
 	FileHandler* fileHandler;
 	ConversionUtils* cUtils;
-	StatusOutput* statusOutput;
 	QStandardItemModel *itemModel;
-
+	StatusOutput* statusOutput;
 	bool isDirective(string word);
 	bool isInstruction(string word);
 

@@ -6,6 +6,8 @@
 #include "FileHandler.h"
 #include "qstandarditemmodel.h"
 #include "Assembler.h"
+#include "StatusOutput.h"
+
 class MetaAssembler : public QMainWindow
 {
 	Q_OBJECT
@@ -41,5 +43,6 @@ private:
 	FileHandler fileHandler;
 	QStandardItemModel *cedarTableModel;
 	Assembler *assembler;
+	StatusOutput* statusOutput;
 
 };

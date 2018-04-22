@@ -190,8 +190,8 @@ public:
         splitter_2->addWidget(splitter);
         statusText = new QTextEdit(splitter_2);
         statusText->setObjectName(QStringLiteral("statusText"));
-        statusText->setMinimumSize(QSize(0, 130));
-        statusText->setMaximumSize(QSize(16777215, 130));
+        statusText->setMinimumSize(QSize(0, 170));
+        statusText->setMaximumSize(QSize(16777215, 250));
         statusText->setReadOnly(true);
         splitter_2->addWidget(statusText);
 

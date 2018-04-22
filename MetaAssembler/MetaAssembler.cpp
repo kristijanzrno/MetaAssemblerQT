@@ -1,9 +1,11 @@
+#pragma once
 #include "MetaAssembler.h"
-#include "Options.h"
 #include <sstream>
+#include "Options.h"
 #include "qfontdialog.h"
 #include "qdesktopservices.h"
 #include "qfiledialog.h"
+#include "qmessagebox.h"
 using namespace std;
 
 MetaAssembler::MetaAssembler(QWidget *parent)
@@ -57,6 +59,9 @@ MetaAssembler::MetaAssembler(QWidget *parent)
 	}
 	ui.tableView->setModel(cedarTableModel);
 	fileHandler = FileHandler(parent);
+	statusOutput = new StatusOutput(ui.statusText);
+	statusOutput->showMessage(0, 10);
+
 }
 
 void MetaAssembler::openHandler()
@@ -64,15 +69,16 @@ void MetaAssembler::openHandler()
 	string content = fileHandler.openFile("");
 	if (content != "") {
 		ui.textEdit->setText(QString::fromStdString(content));
+		statusOutput->showMessage(0, 6);
 	}
 	else {
-		//errorMessage("");
+		statusOutput->showMessage(0, 5);
 	}
 }
 void MetaAssembler::saveHandler()
 {
 	clearTable();
-	bool saved;
+	bool saved = false;
 	QString filename = QFileDialog::getSaveFileName(this, QFileDialog::tr("Save File"), "", QFileDialog::tr("Cedar Memory file (*.cdm);;MetaAssembler Project (*.MASP);;Text file (*.txt)"));
 	if (filename != "") {
 		string content = ui.textEdit->toPlainText().toStdString();
@@ -91,13 +97,19 @@ void MetaAssembler::saveHandler()
 	}
 	if (!saved) {
 		clearTable();
-		//Could not save
+		statusOutput->showMessage(0, 7);
+	}
+	else {
+		statusOutput->showMessage(0, 8);
 	}
 }
 
 void MetaAssembler::exitHandler()
 {
 	//check if the user wants to save
+	if (QMessageBox::Yes == QMessageBox::question(this, tr("Save"), tr("Do you want to save the project first?"))) {
+		saveHandler();
+	}
 	close();
 }
 
@@ -164,10 +176,17 @@ void MetaAssembler::helpHandler()
 
 void MetaAssembler::aboutHandler()
 {
+	statusOutput->showMessage(0, 10);
 }
 
 void MetaAssembler::documentNHandler()
 {
+	if (QMessageBox::Yes == QMessageBox::question(this, tr("Save"), tr("Do you want to save the project first?"))) {
+		saveHandler();
+	}
+	ui.textEdit->clear();
+	ui.statusText->clear();
+	clearTable();
 }
 
 

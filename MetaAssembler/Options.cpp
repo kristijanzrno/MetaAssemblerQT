@@ -62,6 +62,7 @@ void Options::okHandler()
 	}
 	fileHandler->saveFile("inst.txt", instructions);
 	close();
+
 }
 
 void Options::editHandler()

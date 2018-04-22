@@ -6,5 +6,4 @@ class ConversionUtils {
 public:
 	ConversionUtils();
 	int toInt(string address);
-	int calcRelative(int startAddress, int endAddress);
 };

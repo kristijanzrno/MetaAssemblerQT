@@ -3,6 +3,7 @@
 #include <sstream>
 #include "qfontdialog.h"
 #include "qdesktopservices.h"
+#include "qfiledialog.h"
 using namespace std;
 
 MetaAssembler::MetaAssembler(QWidget *parent)
@@ -35,9 +36,9 @@ MetaAssembler::MetaAssembler(QWidget *parent)
  	connect(ui.actionClear_Status_View, SIGNAL(triggered()), this, SLOT(clearStatusHandler()));
 
 	
-	assembler = new Assembler(ui.statusText);
 	//Populating the tableView
 	cedarTableModel = new QStandardItemModel(256, 16, this);
+	assembler = new Assembler(ui.statusText, cedarTableModel);
 
 	//Columns
 	stringstream stringStream;
@@ -68,10 +69,30 @@ void MetaAssembler::openHandler()
 		//errorMessage("");
 	}
 }
-
 void MetaAssembler::saveHandler()
 {
-	fileHandler.saveFile("","");
+	clearTable();
+	bool saved;
+	QString filename = QFileDialog::getSaveFileName(this, QFileDialog::tr("Save File"), "", QFileDialog::tr("Cedar Memory file (*.cdm);;MetaAssembler Project (*.MASP);;Text file (*.txt)"));
+	if (filename != "") {
+		string content = ui.textEdit->toPlainText().toStdString();
+		string data = assembler->decode(content);
+		if (filename.endsWith("txt") || filename.endsWith("MASP")) {
+				saved = fileHandler.saveFile(filename.toUtf8().constData(), content);
+		}
+		else {
+			if (data != "-1") {
+				saved = fileHandler.saveFile(filename.toUtf8().constData(), data);
+			}
+			else {
+				saved = false;
+			}
+		}
+	}
+	if (!saved) {
+		clearTable();
+		//Could not save
+	}
 }
 
 void MetaAssembler::exitHandler()
@@ -152,8 +173,12 @@ void MetaAssembler::documentNHandler()
 
 void MetaAssembler::assemble()
 {
+	clearTable();
 	string content = ui.textEdit->toPlainText().toStdString();
-	assembler->decode(content);
+	string data = assembler->decode(content);
+	if (data == "-1") {
+		clearTable();
+	}
 }
 
 void MetaAssembler::statusToggle()
@@ -162,4 +187,22 @@ void MetaAssembler::statusToggle()
 		ui.statusText->show();
 	else
 		ui.statusText->hide();
+}
+void MetaAssembler::changeEvent(QEvent *event) {
+	QWidget::changeEvent(event);
+	if (event->type() == QEvent::ActivationChange) {
+		if (this->isActiveWindow())
+			assembler->reloadSet();
+	}
+
+}
+
+void MetaAssembler::clearTable()
+{
+	for (int i = 0; i < 256; i++) {
+		for (int j = 0; j < 16; j++) {
+			cedarTableModel->setItem(i, j, new QStandardItem(""));
+
+		}
+	}
 }

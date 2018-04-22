@@ -11,5 +11,4 @@ public:
 private:
 	QWidget * mainWindow;
 	std::string fileRead(std::string name);
-	bool fileWrite(std::string name, std::string data);
 };

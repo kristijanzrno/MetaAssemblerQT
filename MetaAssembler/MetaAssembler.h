@@ -33,7 +33,10 @@ private slots:
 	void assemble();
 	void statusToggle();
 
+
 private:
+	void changeEvent(QEvent * event);
+	void clearTable();
 	Ui::MetaAssemblerClass ui;
 	FileHandler fileHandler;
 	QStandardItemModel *cedarTableModel;

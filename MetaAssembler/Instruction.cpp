@@ -53,7 +53,7 @@ string Instruction::decode(vector<Label*> labels, ConversionUtils * cUtils)
 				if (labels.at(i)->getValue() == INT_MIN)
 					val = labels.at(i)->getAddress();
 				else
-					val = labels.at(i)->getValue();
+ 					val = labels.at(i)->getValue();
 				if (definition.size() == 2)
 					val = val - address;
 				break;
@@ -64,12 +64,10 @@ string Instruction::decode(vector<Label*> labels, ConversionUtils * cUtils)
 	if (val == INT_MIN && !usesLabel)
 		return "**";
 	stringstream stream;
-	stream << hex << val;
+	stream << setfill('0')<< setw(4 - definition.size()) << uppercase << hex << val;
 	value = stream.str();
-	if (val < 0 ) {
-		return value.substr(value.size() - (4-definition.size()), value.size());
-	}
+	if (val < 0)
+		return value.substr(value.size() - (4 - definition.size()), value.size());
 	return value;
-	
 	}
 

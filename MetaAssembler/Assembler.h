@@ -9,25 +9,27 @@
 #include "Label.h"
 #include "StatusOutput.h"
 #include "ConversionUtils.h"
+#include "qstandarditemmodel.h"
 
 using namespace std;
 
 class Assembler {
 public:
-	Assembler(QTextEdit*statusText);
-	bool decode(string text);
+	Assembler(QTextEdit*statusText, QStandardItemModel* itemModel);
+	string decode(string text);
+	void reloadSet();
 
 private:
 	int position;
-	void addressing(string text);
-	void assembling();
-	void reloadSet();
+	string addressing(string text);
+	string assembling();
 
 	map <string, string> instructionsList;
 
 	FileHandler* fileHandler;
 	ConversionUtils* cUtils;
 	StatusOutput* statusOutput;
+	QStandardItemModel *itemModel;
 
 	bool isDirective(string word);
 	bool isInstruction(string word);

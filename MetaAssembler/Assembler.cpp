@@ -2,16 +2,17 @@
 #include <sstream>
 using namespace std;
 
-Assembler::Assembler(QTextEdit* statusText)
+Assembler::Assembler(QTextEdit* statusText, QStandardItemModel *itemModel)
 {
 	fileHandler = new FileHandler();
 	statusOutput = new StatusOutput(statusText);
+	this->itemModel = itemModel;
 	this->sText = statusText;
 	cUtils = new ConversionUtils();
 	reloadSet();
 }
 
-bool Assembler::decode(string text)
+string Assembler::decode(string text)
 {
 	instructions.clear();
 	directives.clear();
@@ -21,7 +22,7 @@ bool Assembler::decode(string text)
 	transform(text.begin(), text.end(), text.begin(), ::toupper);
 	istringstream stream(text);
 	string line;
-	bool equFlag;
+	bool equFlag = false;
 	bool ready = true;
 	while (getline(stream, line)) {
 		istringstream wstream(line);
@@ -61,7 +62,7 @@ bool Assembler::decode(string text)
 			else if (isDirective(words[i])) {
 				if (words.size()-1 != i+1) {
 					//Syntax error 
-					statusOutput->showMessage(lineCount, 2);
+					statusOutput->showMessage(lineCount, 0);
 					ready = false;
 					break;
 				}
@@ -77,17 +78,14 @@ bool Assembler::decode(string text)
 							for (int j = 0; j < labels.size(); j++) {
 								if (words[i + 1] == labels.at(j)->getText()) {
 									usingLabel = true;
-									if (labels.at(j)->getValue() == INT_MIN) {
-										labels.at(labels.size() - 1)->setValue(labels.at(j)->getAddress());
-									}
-									else {
+									if (labels.at(j)->getValue() != INT_MIN) {
 										labels.at(labels.size() - 1)->setValue(labels.at(j)->getValue());
 									}
 								}
 							}
 							if (!usingLabel) {
 								//Invalid syntax
-								statusOutput->showMessage(lineCount, 3);
+								statusOutput->showMessage(lineCount, 0);
 								ready = false;
 							}
 						}
@@ -108,7 +106,7 @@ bool Assembler::decode(string text)
 			}
 			else {
 				//Syntax error
-				statusOutput->showMessage(lineCount, 2);
+				statusOutput->showMessage(lineCount, 0);
 				ready = false;
 			}
 
@@ -117,13 +115,13 @@ bool Assembler::decode(string text)
 		lineCount++;
 	}
 	if (ready)
-		addressing(text);
+		return addressing(text);
 	else
-		statusOutput->showMessage(3, 0);
-	return false;
+		statusOutput->showMessage(0, 3);
+	return "-1";
 }
 
-void Assembler::addressing(string text) {
+string Assembler::addressing(string text) {
 	int lineCount = 0;
 	istringstream stream(text);
 	string line;
@@ -131,6 +129,7 @@ void Assembler::addressing(string text) {
 	int labelCounter = 0;
 	int instructionCounter = 0;
 	bool ready = true;
+	bool equFlag = false;
 	while (getline(stream, line)) {
 		istringstream wstream(line);
 		vector<string> words{ istream_iterator<string>{wstream}, istream_iterator<string>{} };
@@ -154,6 +153,17 @@ void Assembler::addressing(string text) {
 						address = calculatedAddress;
 					}
 				}
+				else if (directive == "EQU") {
+					if (equFlag) {
+						if (labels.at(labelCounter - 1)->getValue() == INT_MIN) {
+							for (int j = 0; j < labels.size(); j++) {
+								if (words[i + 1] == labels.at(j)->getText()) {
+									labels.at(labelCounter - 1)->setValue(labels.at(j)->getAddress());
+								}
+							}
+						}
+					}
+				}
 				else {
 					string extension = "";
 					if (words[i].size() == 4) {
@@ -166,30 +176,56 @@ void Assembler::addressing(string text) {
 				}
 			}
 			else if (i == 0) {
+				if (words[i + 1] == "EQU")
+					equFlag = true;
 				labels.at(labelCounter)->setAddress(address);
 				labelCounter++;
 			}
 		}
 		lineCount++;
+		equFlag = false;
 	}
 	if (ready)
-		assembling();
+		return assembling();
 	else
 		//error message
 		statusOutput->showMessage(0,3);
+	return "-1";
 }
-void Assembler::assembling()
+
+string Assembler::assembling()
 {
 	string output;
+	stringstream stream;
+	stream << "# Instructions\n\n";
 	for (int i = 0; i < instructions.size(); i++) {
-		string value = instructions.at(i)->decode(labels, cUtils);
+		string value = "";
+		if (instructions.at(i)->getDefinition().size() != 4) 
+			 value = instructions.at(i)->decode(labels, cUtils);
 		if (value == "**") {
+			//Syntax error
 			statusOutput->showMessage(0,3);
 			statusOutput->showMessage(instructions.at(i)->getLine(), 0);
+			return "-1";
 		}
+		else {
+			int address = instructions.at(i)->getAddress();
+			string val = instructions.at(i)->getDefinition() + value;
+			stream << hex << address << " : " << val << endl;
+			itemModel->setItem((address/16), (address%16), new QStandardItem(QString::fromStdString(val)));
+
+		}
+	}
+	stream << "\n# Directives\n\n";
+	for (int i = 0; i < directives.size(); i++) {
 
 	}
+	output = stream.str();
+	sText->append(QString::fromStdString(stream.str()));
+	return output;
+
 }
+
 void Assembler::reloadSet()
 {
 	instructionsList.clear();
@@ -227,7 +263,7 @@ bool Assembler::isDirective(string word)
 			return true;
 		}
 		else {
-			if (def == ".N" || def == ".W" || def == ".L") {
+			if (def == ".B" || def == ".W" || def == ".L") {
 				return true;
 			}
 		}

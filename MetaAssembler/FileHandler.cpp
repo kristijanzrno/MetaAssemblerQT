@@ -33,11 +33,14 @@ string FileHandler::openFile(string name)
 
 bool FileHandler::saveFile(string name, string data)
 {
-	if (name == "") {
-		QString filename = QFileDialog::getSaveFileName(mainWindow, QFileDialog::tr("Save File"), "", QFileDialog::tr("Cedar Memory file (*.cdm);;MetaAssembler Project (*.MASP);;Text file (*.txt)"));
-	}
-	else {
-		fileWrite(name, data);
+	ofstream saveFile;
+	saveFile.open(name);
+	if (saveFile.is_open()) {
+		if (saveFile << data) {
+			saveFile.close();
+			return true;
+		}
+		saveFile.close();
 	}
 	return false;
 }
@@ -58,16 +61,4 @@ string FileHandler::fileRead(string name)
 
 }
 
-bool FileHandler::fileWrite(string name, string data)
-{
-	ofstream saveFile;
-	saveFile.open(name);
-	if (saveFile.is_open()) {
-		if (saveFile << data) {
-			saveFile.close();
-			return true;
-		}
-		saveFile.close();
-	}
-	return false;
-}
+

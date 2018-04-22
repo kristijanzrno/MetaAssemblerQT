@@ -94,7 +94,6 @@
     <addaction name="actionCut"/>
     <addaction name="actionCopy"/>
     <addaction name="actionPaste"/>
-    <addaction name="actionDelete"/>
     <addaction name="actionClear_Status_View"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -298,7 +297,7 @@
   <action name="actionConvertToCDM">
    <property name="icon">
     <iconset>
-     <normaloff>../../../../Desktop/png/24x24/Component.png</normaloff>../../../../Desktop/png/24x24/Component.png</iconset>
+     <normaloff>Resources/component.png</normaloff>Resources/component.png</iconset>
    </property>
    <property name="text">
     <string>ConvertToCDM</string>

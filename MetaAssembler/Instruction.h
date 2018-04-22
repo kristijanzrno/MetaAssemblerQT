@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
-#include "Label.h"
 #include <vector>
+#include "Label.h"
 #include "ConversionUtils.h"
 using namespace std;
 class Instruction {
@@ -11,9 +11,10 @@ public:
 	void setValue(string val);
 	void setAddress(int mAddress);
 
+	string decode(vector<Label*> labels, ConversionUtils * cUtils);
+
 	string getValue();
 	string getDefinition();
-	string decode(vector<Label*> labels, ConversionUtils * cUtils);
 	int getLine();
 	int getAddress();
 

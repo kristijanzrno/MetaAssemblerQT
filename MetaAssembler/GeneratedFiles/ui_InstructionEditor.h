@@ -143,7 +143,7 @@ public:
         InstructionEditor->setWindowTitle(QApplication::translate("InstructionEditor", "InstructionEditor", nullptr));
         label->setText(QApplication::translate("InstructionEditor", "Instruction", nullptr));
         label_2->setText(QApplication::translate("InstructionEditor", "Definition  ", nullptr));
-        label_3->setText(QApplication::translate("InstructionEditor", "Operand Size (bytes)", nullptr));
+        label_3->setText(QApplication::translate("InstructionEditor", "Operand Size (characters)", nullptr));
         opSize->setItemText(0, QApplication::translate("InstructionEditor", "0", nullptr));
         opSize->setItemText(1, QApplication::translate("InstructionEditor", "1", nullptr));
         opSize->setItemText(2, QApplication::translate("InstructionEditor", "2", nullptr));

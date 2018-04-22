@@ -1,11 +1,11 @@
 #include "Options.h"
-#include "FileHandler.h"
-#include "qstandarditemmodel.h"
 #include <string>
 #include <sstream>
-#include "InstructionEditor.h"
 #include <iostream>
 #include <fstream>
+#include "FileHandler.h"
+#include "InstructionEditor.h"
+#include "qstandarditemmodel.h"
 #include "qmessagebox.h"
 using namespace std;
 
@@ -14,17 +14,19 @@ Options::Options(QMainWindow *parent)
 {
 	ui.setupUi(this);
 
+	//This class is used to edit the instructions list 
+
 	connect(ui.addButton, SIGNAL(clicked()), this, SLOT(addHandler()));
 	connect(ui.editButton, SIGNAL(clicked()), this, SLOT(editHandler()));
 	connect(ui.removeButton, SIGNAL(clicked()), this, SLOT(removeHandler()));
 	connect(ui.okButton, SIGNAL(clicked()), this, SLOT(okHandler()));
 	connect(ui.cancelButton, SIGNAL(clicked()), this, SLOT(close()));
 
-
+	//Creating the tableview model
 	itemModel = new QStandardItemModel(0, 3, this);
 	itemModel->setHorizontalHeaderItem(0, new QStandardItem(QString("Instruction")));
 	itemModel->setHorizontalHeaderItem(1, new QStandardItem(QString("Definition")));
-	itemModel->setHorizontalHeaderItem(2, new QStandardItem(QString("Operand Size (bytes)")));
+	itemModel->setHorizontalHeaderItem(2, new QStandardItem(QString("Operand Size (characters)")));
 
 	fileHandler = new FileHandler;
 	loadData();
@@ -44,12 +46,14 @@ void Options::removeHandler()
 
 void Options::addHandler()
 {
+	//Using instruction editor to add an instruction
 	InstructionEditor *editor = new InstructionEditor(this, itemModel, ui.tableView, false);
 	editor->exec();
 }
 
 void Options::okHandler()
 {
+	//Saving instructions to the file after the editing is done
 	int numberOfItems = itemModel->rowCount();
 	string instructions;
 	for (int i = 0; i < numberOfItems; i++) {
@@ -60,7 +64,7 @@ void Options::okHandler()
 		}
 		instructions += "\n";
 	}
-	fileHandler->saveFile("inst.txt", instructions);
+	fileHandler->saveFile("instructions.txt", instructions);
 	close();
 
 }
@@ -83,8 +87,9 @@ void Options::editHandler()
 
 void Options::loadData()
 {
+	//Loading data to a string from instructions file using the FileHandler
 	int instructionCount = 0;
-	string instructions = fileHandler->openFile("inst.txt");
+	string instructions = fileHandler->openFile("instructions.txt");
 	istringstream stream(instructions);
 	string line;
 	while (getline(stream, line)) {
@@ -92,6 +97,7 @@ void Options::loadData()
 		itemModel->appendRow(new QStandardItem(QString("")));
 		int wordCount = 0;
 		for (string word; wstream >> word;) {
+			//Passing data to the tableview
 			QStandardItem *data = new QStandardItem(QString(word.c_str()));
 			itemModel->setItem(instructionCount, wordCount, data);
 			wordCount++;

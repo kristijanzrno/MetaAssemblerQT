@@ -156,7 +156,7 @@ public:
         actionConvertToCDM = new QAction(MetaAssemblerClass);
         actionConvertToCDM->setObjectName(QStringLiteral("actionConvertToCDM"));
         QIcon icon8;
-        icon8.addFile(QStringLiteral("../../../../Desktop/png/24x24/Component.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon8.addFile(QStringLiteral("Resources/component.png"), QSize(), QIcon::Normal, QIcon::Off);
         actionConvertToCDM->setIcon(icon8);
         actionError_Check_2 = new QAction(MetaAssemblerClass);
         actionError_Check_2->setObjectName(QStringLiteral("actionError_Check_2"));
@@ -233,7 +233,6 @@ public:
         menuEdit->addAction(actionCut);
         menuEdit->addAction(actionCopy);
         menuEdit->addAction(actionPaste);
-        menuEdit->addAction(actionDelete);
         menuEdit->addAction(actionClear_Status_View);
         menuView->addAction(actionEditor);
         menuView->addAction(actionCDM_Table_View);

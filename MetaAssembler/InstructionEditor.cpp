@@ -7,6 +7,8 @@ using namespace std;
 InstructionEditor::InstructionEditor(QDialog *parent, QStandardItemModel *itemModel, QTableView *tableView, bool edit)
 	: QDialog(parent)
 {
+	//This class is used to handle the instruction editor window and to edit the instructions from Options
+
 	ui.setupUi(this);
 
 	this->tableView = tableView;
@@ -15,7 +17,9 @@ InstructionEditor::InstructionEditor(QDialog *parent, QStandardItemModel *itemMo
 
 	connect(ui.okButton, SIGNAL(clicked()), this, SLOT(okHandler()));
 	connect(ui.cancelButton, SIGNAL(clicked()), this, SLOT(close()));
+
 	ui.opSize->setCurrentIndex(0);
+	//Seting UI values according to the selected instruction
 	if (edit) {
 		QModelIndex selectedIndex = tableView->selectionModel()->selectedIndexes()[0];
 		int row = selectedIndex.row();

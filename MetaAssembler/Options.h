@@ -11,8 +11,7 @@ public:
 	Options(QMainWindow *parent);
 	~Options();
 
-	private slots:
-
+private slots:
 	void removeHandler();
 	void addHandler();
 	void okHandler();

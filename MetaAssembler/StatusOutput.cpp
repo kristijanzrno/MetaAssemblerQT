@@ -5,6 +5,8 @@ using namespace std;
 
 StatusOutput::StatusOutput(QTextEdit * statusText)
 {
+	//Since there is a lot of error checking in the assembling process, this class was introduced with error codes 
+	//This is used to keep the error messages separate from the assembling code and to keep the code cleaner
 	this->statusText = statusText;
 	
 }
@@ -60,6 +62,7 @@ void StatusOutput::showMessage(int line, int code)
 		message = "Too big value at line: " + to_string(lineNumber);
 		break;
 	}
+	//Appending the text as HTML to enable colored messages
 	statusText->moveCursor(QTextCursor::End);
 	statusText->insertHtml(QString::fromStdString((color + message + html)));
 	statusText->moveCursor(QTextCursor::End);

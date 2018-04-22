@@ -15,8 +15,8 @@ class MetaAssembler : public QMainWindow
 public:
 	MetaAssembler(QWidget *parent = Q_NULLPTR);
 
-//Functions to handle UI triggers
-private slots:
+	//Functions to handle UI triggers
+	private slots:
 	void openHandler();
 	void saveHandler();
 	void exitHandler();
@@ -24,7 +24,6 @@ private slots:
 	void cutHandler();
 	void copyHandler();
 	void pasteHandler();
-	void deleteHandler();
 	void editorViewHandler();
 	void tableViewHandler();
 	void customiseHandler();
@@ -39,10 +38,12 @@ private slots:
 private:
 	void changeEvent(QEvent * event);
 	void clearTable();
-	Ui::MetaAssemblerClass ui;
-	FileHandler fileHandler;
-	QStandardItemModel *cedarTableModel;
-	Assembler *assembler;
+
+	FileHandler* fileHandler;
+	Assembler* assembler;
 	StatusOutput* statusOutput;
+
+	Ui::MetaAssemblerClass ui;
+	QStandardItemModel* cedarTableModel;
 
 };

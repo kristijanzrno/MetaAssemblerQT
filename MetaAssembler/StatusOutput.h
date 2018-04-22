@@ -1,13 +1,14 @@
 #pragma once
-#include "qtextedit.h"
 #include <string>
+#include "qtextedit.h"
+using namespace std;
 
 class StatusOutput {
 public:
 	StatusOutput(QTextEdit *statusText);
 	void showMessage(int line, int code);
 private:
-	std::string findColor(int code);
+	string findColor(int code);
 	QTextEdit * statusText;
 	void introMessages();
 };

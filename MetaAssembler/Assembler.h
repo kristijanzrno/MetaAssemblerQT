@@ -1,14 +1,14 @@
 #pragma once
 #include <string>
-#include "FileHandler.h"
 #include <vector>
 #include <map>
-#include "qtextedit.h"
+#include "FileHandler.h"
 #include "Instruction.h"
 #include "Directive.h"
 #include "Label.h"
 #include "StatusOutput.h"
 #include "ConversionUtils.h"
+#include "qtextedit.h"
 #include "qstandarditemmodel.h"
 
 using namespace std;
@@ -16,6 +16,7 @@ using namespace std;
 class Assembler {
 public:
 	Assembler(QTextEdit* statusText, QStandardItemModel* itemModel);
+
 	string decode(string text);
 	void reloadSet();
 
@@ -28,12 +29,13 @@ private:
 
 	FileHandler* fileHandler;
 	ConversionUtils* cUtils;
-	QStandardItemModel *itemModel;
+	QStandardItemModel* itemModel;
 	StatusOutput* statusOutput;
+
 	bool isDirective(string word);
 	bool isInstruction(string word);
 
-	QTextEdit * sText;
+	QTextEdit* sText;
 	vector <Instruction*> instructions;
 	vector <Directive*>	directives;
 	vector <Label*>	labels;

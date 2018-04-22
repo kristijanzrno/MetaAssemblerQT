@@ -2,6 +2,7 @@
 
 Label::Label(int line, string text, int address, int value)
 {
+	//This class is used only to store Label values
 	this->address = address;
 	this->value = value;
 	this->text = text;

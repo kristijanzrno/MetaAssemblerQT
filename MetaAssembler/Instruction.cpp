@@ -4,7 +4,7 @@
 #include <sstream>
 using namespace std;
 
-Instruction::Instruction(int address, int line, string type, string definition, vector<Label*> labels)
+Instruction::Instruction(int address, int line, string type, string definition)
 {
 	this->type = type;
 	this->definition = definition;
@@ -37,48 +37,38 @@ int Instruction::getLine()
 	return 0;
 }
 
-string Instruction::decode()
+int Instruction::getAddress()
 {
-	int definition = validData();
-	bool valid;
-	if (definition != -1) {
-		
-	}
-	else {
+	return address;
+}
+
+string Instruction::decode(vector<Label*> labels, ConversionUtils * cUtils)
+{
+ 	int val = cUtils->toInt(value);
+	bool usesLabel = false;
+	if (val == INT_MIN) {
 		for (int i = 0; i < labels.size(); i++) {
 			if (value == labels.at(i)->getText()) {
-				int val;
+				usesLabel = true;
 				if (labels.at(i)->getValue() == INT_MIN)
 					val = labels.at(i)->getAddress();
-				else 
+				else
 					val = labels.at(i)->getValue();
-				stringstream stream;
-				stream << hex << labels.at(i)->getAddress();
-				value = stream.str();
+				if (definition.size() == 2)
+					val = val - address;
+				break;
+				
 			}
 		}
 	}
-	return string();
-}
-
-int Instruction::validData()
-{
-	if (value[0] == '$') {
-		value = value.substr(1, value.size());
-		for (int i = 0; i < value.size(); i++) {
-			if (!(value[i] >= '0' && value[i] <= '9' || value[i] >= 'A' && value[i] <= 'F')) {
-				return -1;
-			}
-		}
-		return stoul(value, nullptr, 16);
+ 
+	stringstream stream;
+	stream << hex << val;
+	value = stream.str();
+	if (val < 0 ) {
+		return value.substr(value.size() - (4-definition.size()), value.size());
 	}
-	if (value[0] == '#')
-		value = value.substr(1, value.size());
-
-	for (int i = 0; i < value.size(); i++) {
-		if (!(value[i] >= '0' && value[i] <= '9')) {
-			return -1;
-		}
+	return value;
+	
 	}
-	return stoi(value);
-}
+

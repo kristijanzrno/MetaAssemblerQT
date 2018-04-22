@@ -116,6 +116,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Assembler.cpp" />
+    <ClCompile Include="ConversionUtils.cpp" />
     <ClCompile Include="Directive.cpp" />
     <ClCompile Include="FileHandler.cpp" />
     <ClCompile Include="InstructionEditor.cpp" />
@@ -139,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assembler.h" />
+    <ClInclude Include="ConversionUtils.h" />
     <ClInclude Include="Directive.h" />
     <ClInclude Include="FileHandler.h" />
     <ClInclude Include="Instruction.h" />

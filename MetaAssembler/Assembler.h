@@ -8,29 +8,31 @@
 #include "Directive.h"
 #include "Label.h"
 #include "StatusOutput.h"
+#include "ConversionUtils.h"
+
 using namespace std;
 
 class Assembler {
 public:
-	Assembler(QTextEdit *statusText);
+	Assembler(QTextEdit*statusText);
 	bool decode(string text);
 
 private:
 	int position;
 	void addressing(string text);
-	void assembling(string text);
+	void assembling();
 	void reloadSet();
 
 	map <string, string> instructionsList;
 
 	FileHandler* fileHandler;
-	
+	ConversionUtils* cUtils;
 	StatusOutput* statusOutput;
+
 	bool isDirective(string word);
 	bool isInstruction(string word);
 
-	int toInt(string address);
-
+	QTextEdit * sText;
 	vector <Instruction*> instructions;
 	vector <Directive*>	directives;
 	vector <Label*>	labels;
